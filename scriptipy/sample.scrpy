@@ -1,0 +1,30 @@
+StartNode
+  John: I am: foo!
+  Jane: Actually, foo: bar.
+
+  John: Who do you agree with?
+
+  CHOICE
+    JohnBranch: I agree with John.
+    JaneBranch: I agree with Jane.
+
+
+JohnBranch
+  SET love_interest: john
+
+  John: I knew you'd agree with me.
+
+  JUMP EndNode
+
+
+JaneBranch
+  SET love_interest: jane
+
+  Jane: See? I told you.
+
+  JUMP EndNode
+
+
+EndNode
+  John: Well, whatever.
+  Jane: Whatever my butt.
