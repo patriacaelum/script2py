@@ -24,9 +24,8 @@ class Visualizer:
         b1 -> end;
     }
     """
-    def __init__(self, filepath, interval=5):
+    def __init__(self, filepath):
         self.filepath = filepath
-        self.interval = interval
 
         dirpath = os.path.dirname(self.filepath)
         self.jsonfile = os.path.join(dirpath, "script2json.json")
@@ -40,8 +39,6 @@ class Visualizer:
 
         # Check if the file has been modified in timed intervals and render
         while True:
-            time.sleep(self.interval)
-
             check_last_modified = os.stat(self.filepath).st_mtime
 
             if check_last_modified != last_modified:

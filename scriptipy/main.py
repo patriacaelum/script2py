@@ -22,18 +22,9 @@ def main():
         help="path to the script file to parse",
         dest="filepath"
     )
-    parser.add_argument(
-        "--interval",
-        "-i",
-        default=5,
-        type=int,
-        help="in seconds, how often the program checks if the work file has been"
-        "modified and renders the script",
-        dest="interval"
-    )
     args = parser.parse_args()
 
-    visualizer = Visualizer(args.filepath, args.interval)
+    visualizer = Visualizer(args.filepath)
     visualizer.run()
 
 

@@ -1,34 +1,36 @@
 digraph G {
 subgraph cluster_0{
 label = "StartNode";
-140719002921136 [label="John\nI am: foo!", shape=box];
-140719002920416 [label="Jane\nActually, foo: bar.", shape=box];
-140719002920656 [label="John\nWho do you agree with?", shape=box];
-140719002920560 [label="Choice\n0. I agree with John.\n1. I agree with Jane.", shape=box];
+140185072075776 [label="John\nI am: foo!", shape=box];
+140185072076688 [label="Jane\nActually, foo: bar.", shape=box];
+140185071384656 [label="John\nWho do you agree with?", shape=box];
+140185071383792 [label="Choice\n0. I agree with John.\n1. I agree with Jane.", shape=box];
 }
 subgraph cluster_1{
 label = "JohnBranch";
-140719002920752 [label="Set\nlove_interest = john", shape=box];
-140719002920800 [label="John\nI knew you'd agree with me.", shape=box];
+140185071384320 [label="Set\nlove_interest = john", shape=box];
+140185071384464 [label="John\nI knew you'd agree with me.", shape=box];
 }
 subgraph cluster_2{
 label = "JaneBranch";
-140719002920464 [label="Set\nlove_interest = jane", shape=box];
-140719002920224 [label="Jane\nSee? I told you.", shape=box];
+140185071384224 [label="Set\nlove_interest = jane", shape=box];
+140185071384176 [label="Jane\nSee? I told you.", shape=box];
 }
 subgraph cluster_3{
 label = "EndNode";
-140719002920128 [label="John\nWell, whatever.", shape=box];
-140719002921808 [label="Jane\nWhatever my butt.", shape=box];
+140185071384080 [label="John\nWell, whatever.", shape=box];
+140185071383984 [label="Jane\nWhatever my butt.", shape=box];
+140185071383888 [label="John\nThat's rude.", shape=box];
 }
-140719002921136 -> 140719002920416;
-140719002920416 -> 140719002920656;
-140719002920656 -> 140719002920560;
-140719002920560 -> 140719002920752 [label=0];
-140719002920560 -> 140719002920464 [label=1];
-140719002920752 -> 140719002920800;
-140719002920800 -> 140719002920128;
-140719002920464 -> 140719002920224;
-140719002920224 -> 140719002920128;
-140719002920128 -> 140719002921808;
+140185072075776 -> 140185072076688;
+140185072076688 -> 140185071384656;
+140185071384656 -> 140185071383792;
+140185071383792 -> 140185071384320 [label=0];
+140185071383792 -> 140185071384224 [label=1];
+140185071384320 -> 140185071384464;
+140185071384464 -> 140185071384080;
+140185071384224 -> 140185071384176;
+140185071384176 -> 140185071384080;
+140185071384080 -> 140185071383984;
+140185071383984 -> 140185071383888;
 }
