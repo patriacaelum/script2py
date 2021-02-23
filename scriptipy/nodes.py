@@ -5,22 +5,21 @@ The nodes each represent a block in the script.
 class Node:
     """The base class."""
 
-    type = None
+    node_type = None
+    next_section = None
 
-    def __init__(self, next=None):
-        self.id = id(self)
-        self.next = next
+    def __init__(self, section):
+        self.node_id = id(self)
+        self.section = section
+
+    def to_dot(self):
+        return f"{self.node_id};"
 
     def to_json(self):
         return {
-            "id": self.id,
-            "type": self.type,
-            "next": self.next
+            "id": self.node_id,
+            "type": self.node_type
         }
-
-    def to_script(self):
-        return list()
-
 
 
 class Line(Node):
@@ -46,23 +45,25 @@ class Line(Node):
     text: (str) the line of text the character is saying.
     """
 
-    type = "line"
+    node_type = "line"
 
-    def __init__(self, speaker, text, *args):
+    def __init__(self, speaker="", text="", *args):
         super().__init__(*args)
 
         self.speaker = speaker
         self.text = text
 
+    def to_dot(self):
+        return f"{self.node_id} [label=\"{self.speaker}\\n{self.text}\", shape=box];"
+
     def to_json(self):
-        return {
-            **super().to_json(),
+        json_node = super().to_json()
+        json_node.update({
             "speaker": self.speaker,
             "text": self.text
-        }
+        })
 
-    def to_script(self):
-        return [f"{self.speaker}: {self.text}"]
+        return json_node
 
 
 class Choice(Node):
@@ -71,8 +72,8 @@ class Choice(Node):
     Script format:
     ```
     CHOICE
-        0001: First choice
-        0002: Second choice
+        First Choice: 0001
+        Second Choice: 0002
     ```
 
     JSON format:
@@ -81,9 +82,8 @@ class Choice(Node):
         "id": "0001",
         "type": "choice",
         "choices": {
-            "0001": "First choice",CA
-
-            "0002": "Second choice"
+            "First Choice": "0001",
+            "Second Choice": "0002"
         }
     }
     ```
@@ -92,24 +92,25 @@ class Choice(Node):
         choice text to the id of the next node.
     """
 
-    type = "choice"
+    node_type = "choice"
 
     def __init__(self, choices=dict(), *args):
         super().__init__(*args)
 
         self.choices = choices
 
-    def to_json(self):
-        return {
-            **super().to_json(),
-            "choices": self.choices
-        }
+    def to_dot(self):
+        choice_text = "\\n".join([
+            f"{n}. {choice}" for n, choice in enumerate(self.choices.keys())
+        ])
 
-    def to_script(self):
-        return [
-            "CHOICE",
-            *[f"{key}: {value}" for key, value in self.choices.items()]
-        ]
+        return f"{self.node_id} [label=\"Choice\\n{choice_text}\", shape=box];"
+
+    def to_json(self):
+        json_node = super().to_json()
+        json_node.update({"choices": self.choices})
+
+        return json_node
 
 
 class Setter(Node):
@@ -134,21 +135,23 @@ class Setter(Node):
     properties: (dict) key-value pairs of variables.
     """
 
-    type = "setter"
+    node_type = "setter"
 
-    def __init__(self, key, value, *args):
+    def __init__(self, key="", value="", *args):
         super().__init__(*args)
 
         self.key = key
         self.value = value
 
-    def to_json(self):
-        return {
-            **super().to_json(),
-            "property": {
-                f"{self.key}": f"{self.value}"
-            }
-        }
+    def to_dot(self):
+        return f"{self.node_id} [label=\"Set\\n{self.key} = {self.value}\", shape=box];"
 
-    def to_script(self):
-        return [f"SET {self.key}: {self.value}"]
+    def to_json(self):
+        json_node = super().to_json()
+        json_node.update({
+            "key": self.key,
+            "value": self.value
+        })
+
+        return json_node
+
