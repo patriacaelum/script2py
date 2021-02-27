@@ -1,0 +1,91 @@
+Start
+  Dad: How did this work again? Which one do I press...
+
+  SET dad.computer = on
+
+  Son: Dad! Hello? Can you hear me?
+  Dad: Johnny, my boy! Can you hear me alright?
+  Son: Yeah, dad. I can hear you. Can you hear me?
+  Dad: Yes! Yes, it's good to hear you again, Johnny. How are you doing?
+  Son: Good, dad. I'm doing good.
+  Dad: Look! I got springrolls! I made 'em this morning, so they're damn ugly. The cooking ladies on the internet make everything look so easy.
+  Son: It looks really good, dad. You're getting a lot better at it.
+  Dad: I'm gonna get you to try it once you can get home. I'll keep practicing. Maybe one of these days, they'll taste like your mom's.
+  Son: Yeah, that'd be great.
+  Dad: What have you got, Johnny?
+
+  CHOICE
+    ShowBranch: As you can see, I just got the usual frozen microwave dinner.
+    TellBranch: You know, I just got the usual frozen microwave dinner.
+
+
+ShowBranch
+  SET father.mood = worried
+
+  Dad: That actually doesn't look half bad! You must be pretty busy, eh, Johnny?
+  Son: Yeah, work really tires me out.
+
+  JUMP Eat
+
+
+TellBranch
+  SET father.mood = disappointed
+
+  Dad: Oh, Johnny. I keep tellin' you that those things aren't good for you. Full of plastic and chemicals. You gotta watch your health, or you'll regret it when you get to my age.
+  Son: I know, dad. Work just really tires me out.
+
+  JUMP Eat
+
+
+Eat
+  Dad: Well, I'm starving. Let's eat.
+
+  CHOICE
+    SilenceBranch: ...
+    ChatterBranch: Yeah.
+
+
+SilenceBranch
+  SET mood = awkward && stiff
+
+  Dad: Munch munch munch...
+  Son: Munch munch munch...
+
+  JUMP End
+
+
+ChatterBranch
+  SET mood = warm && bright
+
+  Son: So, what else did you do today? Munch munch munch...
+  Dad: Munch munch munch... Not a lot. I took a nap and watched some TV. There's never anything interesting on anymore. Not things I like, anyway.
+  Son: That sounds nice. I think I'll have to do overtime again this weekend. Not looking forward to that. Munch munch munch...
+  Dad: They're working you half to death! Munch munch munch... You gotta find a place that treats you better, Johnny. I'm telling you, I never worked overtime like you do when I was your age.
+  Son: I know, dad. I'm looking. Munch munch munch...
+
+  JUMP End
+
+
+End
+  SET dad.plate = empty
+  SET son.plate = empty
+
+  Dad: Cheers! Glug glug glug...
+  Son: Cheers! glug glug glug...
+  Dad: It was good seeing you again, Johnny. Make sure you get home whenever you can. Come home soon.
+  Son: I know, dad. It'll take some time, but I'm trying.
+
+  SET dad.face = fake_smile
+
+  Dad: I know.
+
+  SET son.face = fake_smile
+
+  Son: Goodnight, dad. I'll see again, same time next week.
+  Dad: Goodnight.
+
+  SET dad.computer = off
+  SET son.computer = off
+
+  Son: (Stands and walks away, tossing his plastic container into the trash.)
+  Dad: (Looks out the window, then back at the black screen. Stands and shuffles to the sink to clean the dishes. He drops a towel and reluctantly picks it up, tired, then continues on his way.)

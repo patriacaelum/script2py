@@ -25,12 +25,11 @@ class Visualizer:
     }
     """
     def __init__(self, filepath):
-        self.filepath = filepath
+        self.filepath = os.path.abspath(filepath)
 
-        dirpath = os.path.dirname(self.filepath)
-        self.jsonfile = os.path.join(dirpath, "script2json.json")
-        self.dotfile = os.path.join(dirpath, "script2json.dot")
-        self.graphfile = os.path.join(dirpath, "script2json.png")
+        self.jsonfile = self.filepath.replace(".s2j", ".json")
+        self.dotfile = self.filepath.replace(".s2j", ".dot")
+        self.graphfile = self.filepath.replace(".s2j", ".png")
 
     def run(self):
         # Initial render

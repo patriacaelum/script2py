@@ -5,6 +5,7 @@ from nodes import Line, Choice, Setter
 
 
 class Script:
+    """TODO wrap text with a line limit as an argument"""
     def __init__(self, script=""):
         self.nodes = list()
 
@@ -46,8 +47,8 @@ class Script:
             # Setter nodes are a single line that begin with the keyword `SET` in
             # the format `SET variable_name: variable_value`
             elif first_word == "SET":
-                key = lines[n].split(":")[0].split()[1]
-                value = ":".join(lines[n].split(":")[1:]).strip()
+                key = lines[n].split("=")[0].split()[1]
+                value = "=".join(lines[n].split("=")[1:]).strip()
 
                 self.nodes.append(Setter(key, value, current_section))
 
