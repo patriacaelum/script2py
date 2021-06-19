@@ -48,7 +48,6 @@ class Visualizer:
         with open(self.filepath, "r") as file:
             script = Script(file.read())
 
-
         with open(self.jsonfile, "w") as file:
             try:
                 json.dump(script.to_json(), file)
@@ -72,4 +71,6 @@ class Visualizer:
             print(f"Warning: graph output not updated due to error: {process.stderr}")
         else:
             print(f"Successfully updated GraphViz output to: {self.graphfile}")
+
+        print("\nScript2JSON Visualizer running...press CTRL-C to stop")
 

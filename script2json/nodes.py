@@ -1,25 +1,65 @@
 """nodes.py
 
-The nodes each represent a block in the script.
+The nodes each represent a block in the script. The currently supported nodes
+are:
+- the base `Node`, which all nodes inherit from
+- the `Line` node, which stores a a line of dialogue from a speaker
+- the `Choice` node, which gives the player a choice and creates a branching
+  path
+- the `Setter` node, which changes a system parameter
 """
-class Node:
-    """The base class."""
 
+
+class Node:
+    """The base node class.
+
+    Each node has the following properties:
+    - a `node_id`, which is created upon instantiation
+    - a `section`, which groups nodes together
+    - a `next_section`, which is only applicable for the last node in a section
+
+    Each inherited class should:
+    - set the `node_type`
+    - format its displayed text using the `_format()` function
+    - add to the `to_dot()` and `to_json()` functions with its additional
+      parameters
+
+    Parameters
+    ------------
+    section: (str) the name of the group this node is in.
+    """
     node_type = None
     next_section = None
+    textlength_max = 80
 
     def __init__(self, section):
         self.node_id = id(self)
         self.section = section
 
     def to_dot(self):
+        """Formats the node parameters for a dot graph."""
         return f"{self.node_id};"
 
     def to_json(self):
+        """Formats the node paramters for a JSON file."""
         return {
             "id": self.node_id,
             "type": self.node_type
         }
+
+    def _format(self, text):
+        """Formats text to have a a maximum of `textlength_max` characters."""
+        textlength = 0
+        while len(text) - textlength > self.textlength_max:
+            textlength += self.textlength_max
+            
+            for i in range(self.textlength_max):
+                if text[textlength-i].isspace():
+                    text = text[0:textlength-i] + "\n" + text[textlength-i+1:]
+                    textlength += 1
+                    break
+            
+        return text
 
 
 class Line(Node):
@@ -51,7 +91,7 @@ class Line(Node):
         super().__init__(*args)
 
         self.speaker = speaker
-        self.text = text
+        self.text = self._format(text)
 
     def to_dot(self):
         return f"{self.node_id} [label=\"{self.speaker}\\n{self.text}\", shape=box];"
@@ -97,7 +137,7 @@ class Choice(Node):
     def __init__(self, choices=dict(), *args):
         super().__init__(*args)
 
-        self.choices = choices
+        self.choices = {key: self._format(value) for key, value in choices.items()}
 
     def to_dot(self):
         choice_text = "\\n".join([
@@ -108,7 +148,7 @@ class Choice(Node):
 
     def to_json(self):
         json_node = super().to_json()
-        json_node.update({"choices": self.choices})
+        json_node.update({"choices": [choice for choice in self.choices.keys()]})
 
         return json_node
 

@@ -1,0 +1,125 @@
+digraph G {
+subgraph cluster_0{
+label = "Start";
+139948029111840 [label="Dad\nHow did this work again? Which one do I press...", shape=box];
+139948027937312 [label="Set\ndad.computer = on", shape=box];
+139948027937072 [label="Son\nDad! Hello? Can you hear me?", shape=box];
+139948027937408 [label="Dad\nJohnny, my boy! Can you hear me alright?", shape=box];
+139948027937504 [label="Son\nYeah, dad. I can hear you. Can you hear me?", shape=box];
+139948027937168 [label="Dad\nYes! Yes, it's good to hear you again, Johnny. How are you doing?", shape=box];
+139948027937120 [label="Son\nGood, dad. I'm doing good.", shape=box];
+139948027937600 [label="Dad\nLook! I got springrolls! I made 'em this morning, so they're damn ugly. The
+cooking ladies on the internet make everything look so easy.", shape=box];
+139948027937744 [label="Son\nIt looks really good, dad. You're getting a lot better at it.", shape=box];
+139948027937888 [label="Dad\nI'm gonna get you to try it once you can get home. I'll keep practicing. Maybe
+one of these days, they'll taste like your mom's.", shape=box];
+139948027938032 [label="Son\nYeah, that'd be great.", shape=box];
+139948027938128 [label="Dad\nWhat have you got, Johnny?", shape=box];
+139948027938272 [label="Choice\n0. As you can see, I just got the usual frozen microwave dinner.\n1. You know, I just got the usual frozen microwave dinner.", shape=box];
+}
+subgraph cluster_1{
+label = "ShowBranch";
+139948027938416 [label="Set\nfather.mood = worried", shape=box];
+139948027907856 [label="Dad\nThat actually doesn't look half bad! You must be pretty busy, eh, Johnny?", shape=box];
+139948027907952 [label="Son\nYeah, work really tires me out.", shape=box];
+}
+subgraph cluster_2{
+label = "TellBranch";
+139948027908048 [label="Set\nfather.mood = disappointed", shape=box];
+139948027907376 [label="Dad\nOh, Johnny. I keep tellin' you that those things aren't good for you. Full of
+plastic and chemicals. You gotta watch your health, or you'll regret it when you
+get to my age.", shape=box];
+139948027907664 [label="Son\nI know, dad. Work just really tires me out.", shape=box];
+}
+subgraph cluster_3{
+label = "Eat";
+139948027907568 [label="Dad\nWell, I'm starving. Let's eat.", shape=box];
+139948027907472 [label="Choice\n0. ...\n1. Yeah.", shape=box];
+}
+subgraph cluster_4{
+label = "SilenceBranch";
+139948027907328 [label="Set\nmood = awkward && stiff", shape=box];
+139948027907184 [label="Dad\nMunch munch munch...", shape=box];
+139948027768944 [label="Son\nMunch munch munch...", shape=box];
+}
+subgraph cluster_5{
+label = "ChatterBranch";
+139948027769040 [label="Set\nmood = warm && bright", shape=box];
+139948027769136 [label="Son\nSo, what else did you do today? Munch munch munch...", shape=box];
+139948027769232 [label="Dad\nMunch munch munch... Not a lot. I took a nap and watched some TV. There's never
+anything interesting on anymore. Not things I like, anyway.", shape=box];
+139948027769376 [label="Son\nThat sounds nice. I think I'll have to do overtime again this weekend. Not
+looking forward to that. Munch munch munch...", shape=box];
+139948027769472 [label="Dad\nThey're working you half to death! Munch munch munch... You gotta find a place
+that treats you better, Johnny. I'm telling you, I never worked overtime like you
+do when I was your age.", shape=box];
+139948027769520 [label="Son\nI know, dad. I'm looking. Munch munch munch...", shape=box];
+}
+subgraph cluster_6{
+label = "End";
+139948027769616 [label="Set\ndad.plate = empty", shape=box];
+139948027769712 [label="Set\nson.plate = empty", shape=box];
+139948027769808 [label="Dad\nCheers! Glug glug glug...", shape=box];
+139948027769904 [label="Son\nCheers! glug glug glug...", shape=box];
+139948027770000 [label="Dad\nIt was good seeing you again, Johnny. Make sure you get home whenever you can.
+Come home soon.", shape=box];
+139948027770144 [label="Son\nI know, dad. It'll take some time, but I'm trying.", shape=box];
+139948027770192 [label="Set\ndad.face = fake_smile", shape=box];
+139948027770288 [label="Dad\nI know.", shape=box];
+139948027770384 [label="Set\nson.face = fake_smile", shape=box];
+139948027770480 [label="Son\nGoodnight, dad. I'll see again, same time next week.", shape=box];
+139948027770576 [label="Dad\nGoodnight.", shape=box];
+139948027770672 [label="Set\ndad.computer = off", shape=box];
+139948027770768 [label="Set\nson.computer = off", shape=box];
+139948027770864 [label="Son\n(Stands and walks away, tossing his plastic container into the trash.)", shape=box];
+139948027770960 [label="Dad\n(Looks out the window, then back at the black screen. Stands and shuffles to the
+sink to clean the dishes. He drops a towel and reluctantly picks it up, tired,
+then continues on his way.)", shape=box];
+}
+139948029111840 -> 139948027937312;
+139948027937312 -> 139948027937072;
+139948027937072 -> 139948027937408;
+139948027937408 -> 139948027937504;
+139948027937504 -> 139948027937168;
+139948027937168 -> 139948027937120;
+139948027937120 -> 139948027937600;
+139948027937600 -> 139948027937744;
+139948027937744 -> 139948027937888;
+139948027937888 -> 139948027938032;
+139948027938032 -> 139948027938128;
+139948027938128 -> 139948027938272;
+139948027938272 -> 139948027938416 [label=0];
+139948027938272 -> 139948027908048 [label=1];
+139948027938416 -> 139948027907856;
+139948027907856 -> 139948027907952;
+139948027907952 -> 139948027907568;
+139948027908048 -> 139948027907376;
+139948027907376 -> 139948027907664;
+139948027907664 -> 139948027907568;
+139948027907568 -> 139948027907472;
+139948027907472 -> 139948027907328 [label=0];
+139948027907472 -> 139948027769040 [label=1];
+139948027907328 -> 139948027907184;
+139948027907184 -> 139948027768944;
+139948027768944 -> 139948027769616;
+139948027769040 -> 139948027769136;
+139948027769136 -> 139948027769232;
+139948027769232 -> 139948027769376;
+139948027769376 -> 139948027769472;
+139948027769472 -> 139948027769520;
+139948027769520 -> 139948027769616;
+139948027769616 -> 139948027769712;
+139948027769712 -> 139948027769808;
+139948027769808 -> 139948027769904;
+139948027769904 -> 139948027770000;
+139948027770000 -> 139948027770144;
+139948027770144 -> 139948027770192;
+139948027770192 -> 139948027770288;
+139948027770288 -> 139948027770384;
+139948027770384 -> 139948027770480;
+139948027770480 -> 139948027770576;
+139948027770576 -> 139948027770672;
+139948027770672 -> 139948027770768;
+139948027770768 -> 139948027770864;
+139948027770864 -> 139948027770960;
+}

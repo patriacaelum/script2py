@@ -1,3 +1,8 @@
+"""script.py
+
+"""
+
+
 from collections import defaultdict
 from itertools import groupby
 
@@ -5,7 +10,6 @@ from nodes import Line, Choice, Setter
 
 
 class Script:
-    """TODO wrap text with a line limit as an argument"""
     def __init__(self, script=""):
         self.nodes = list()
 
