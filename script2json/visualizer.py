@@ -39,9 +39,12 @@ class Visualizer:
     ------------
     filepath: (str) the filepath where the script file is, with an `.s2j`
               extension.
+    interval: (int) the number of seconds between checking if the files in the
+              `filepath` has been updated.
     """
-    def __init__(self, filepath):
+    def __init__(self, filepath, interval=0):
         self.filepath = os.path.abspath(filepath)
+        self.interval = interval
 
         self.jsonfile = self.filepath.replace(".s2j", ".json")
         self.dotfile = self.filepath.replace(".s2j", ".dot")
@@ -65,6 +68,8 @@ class Visualizer:
             if check_last_modified != last_modified:
                 last_modified = check_last_modified
                 self.render_graph()
+
+            time.sleep(self.interval)
 
     def render_graph(self):
         """Creates the file outputs.

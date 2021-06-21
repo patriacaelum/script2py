@@ -25,9 +25,18 @@ def main():
         help="path to the script file to parse",
         dest="filepath"
     )
+    parser.add_argument(
+        "--interval",
+        "-i",
+        default=0,
+        type=int,
+        required=False,
+        help="number of seconds between checking if the files have been updated",
+        dest="interval"
+    )
     args = parser.parse_args()
 
-    visualizer = Visualizer(args.filepath)
+    visualizer = Visualizer(filepath=args.filepath, interval=args.interval)
     visualizer.run()
 
 
