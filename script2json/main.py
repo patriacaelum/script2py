@@ -28,15 +28,38 @@ def main():
     parser.add_argument(
         "--interval",
         "-i",
-        default=0,
         type=int,
         required=False,
         help="number of seconds between checking if the files have been updated",
         dest="interval"
     )
+    parser.add_argument(
+        "--render",
+        action="store_true",
+        type=bool,
+        required=False,
+        help="enables rendering dot files",
+        dest="render"
+    )
+    parser.add_argument(
+        "--no-render",
+        action="store_false",
+        type=bool,
+        required=False,
+        help="disables rendering dot files",
+        dest="render"
+    )
+    parser.set_defaults(
+        interval=0,
+        render=True
+    )
     args = parser.parse_args()
 
-    visualizer = Visualizer(filepath=args.filepath, interval=args.interval)
+    visualizer = Visualizer(
+        filepath=args.filepath,
+        interval=args.interval,
+        render=args.render
+    )
     visualizer.run()
 
 
