@@ -1,9 +1,12 @@
 """main.py
+
 Based on The Poor Man's Dialogue Tree.
 
 This module is meant to translate a basic script to JSON and render a directed
-graph using graphviz.
+graph using GraphViz.
 """
+
+
 from argparse import ArgumentParser
 
 from visualizer import Visualizer
@@ -30,3 +33,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

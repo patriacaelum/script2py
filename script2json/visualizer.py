@@ -1,3 +1,14 @@
+"""visualizer.py
+
+The visualizer monitors a script file and creates the JSON file and renders the
+dot graph whenever the script file changes.
+- everytime the script file changes, a new `Script` object is created and the
+  file is reanalyzed, so that large scripts may take longer to process
+- everytime the script file is processed, there are three outputs, which is the
+  JSON file, the dot file, and the PNG file (if GraphViz is installed)
+"""
+
+
 import json
 import os
 import subprocess
@@ -23,6 +34,11 @@ class Visualizer:
         a2 -> end;
         b1 -> end;
     }
+
+    Parameters
+    ------------
+    filepath: (str) the filepath where the script file is, with an `.s2j`
+              extension.
     """
     def __init__(self, filepath):
         self.filepath = os.path.abspath(filepath)
@@ -32,6 +48,12 @@ class Visualizer:
         self.graphfile = self.filepath.replace(".s2j", ".png")
 
     def run(self):
+        """Runs the visualizer.
+
+        The visualizer runs on an infinite loop and continually checks if the
+        script file has been updated by comparing the time the file was last
+        modified.
+        """
         # Initial render
         last_modified = os.stat(self.filepath).st_mtime
         self.render_graph()
@@ -45,6 +67,11 @@ class Visualizer:
                 self.render_graph()
 
     def render_graph(self):
+        """Creates the file outputs.
+
+        All three outputs are attempted to be created. This includes the JSON
+        file, the dot file, and running GraphViz to create a PNG of the graph.
+        """
         with open(self.filepath, "r") as file:
             script = Script(file.read())
 

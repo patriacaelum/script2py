@@ -37,18 +37,37 @@ class Node:
         self.section = section
 
     def to_dot(self):
-        """Formats the node parameters for a dot graph."""
+        """Formats the node parameters for a dot graph.
+
+        Returns
+        ---------
+        (str) the dot graph for this node.
+        """
         return f"{self.node_id};"
 
     def to_json(self):
-        """Formats the node paramters for a JSON file."""
+        """Formats the node paramters for a JSON file.
+
+        Returns
+        ---------
+        (str) the JSON data for this node.
+        """
         return {
             "id": self.node_id,
             "type": self.node_type
         }
 
     def _format(self, text):
-        """Formats text to have a a maximum of `textlength_max` characters."""
+        """Formats text to have a a maximum of `textlength_max` characters.
+
+        Parameters
+        ------------
+        text: (str) the text to be formatted.
+
+        Returns
+        ---------
+        (str) the formatted text.
+        """
         textlength = 0
         while len(text) - textlength > self.textlength_max:
             textlength += self.textlength_max

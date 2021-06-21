@@ -1,5 +1,10 @@
 """script.py
 
+Each script represents a full conversation consisting of multiple nodes (see
+`nodes.py`).
+- Each script may use any number of nodes that are grouped into sections, which
+  are determined by the branching paths in the script by using the `Choice` node
+- The script is responsible for ordering and linking the nodes together
 """
 
 
@@ -10,6 +15,13 @@ from nodes import Line, Choice, Setter
 
 
 class Script:
+    """Converts a script into nodes that are used to create a dot graph and JSON
+    file.
+
+    Parameters
+    ------------
+    script: (str) the script file (see `nodes.py` for formatting for each node).
+    """
     def __init__(self, script=""):
         self.nodes = list()
 
@@ -87,6 +99,12 @@ class Script:
                 n += 1
         
     def to_dot(self):
+        """Creates the dot graph for the script.
+
+        Returns
+        ---------
+        (str) the dot graph for this script.
+        """
         # Define all nodes with their sections as subgraphs
         dot_subgraphs = "\n".join([
             "\n".join([
@@ -120,6 +138,12 @@ class Script:
         return dot_output
     
     def to_json(self):
+        """Creates the JSON data for the script.
+
+        Returns
+        ---------
+        (str) the JSON data for this script.
+        """
         json_output = list()
         
         for n, node in enumerate(self.nodes):
@@ -132,9 +156,14 @@ class Script:
 
     def _next_node(self, n):
         """Searches for the id of the next node.
-        
-        \param n (int) the index of the node in question.
-        \return (list or None) the id of the next node.
+
+        Parameters
+        ------------
+        n: (int) the index of the node in question.
+
+        Returns
+        ---------
+        next_id: (list or None) the id of the next node.
         """
         next_id = list()
 
@@ -158,6 +187,16 @@ class Script:
         return next_id
 
     def _next_section_id(self, section):
+        """Searches for the id of the first node in the next section.
+
+        Parameters
+        ------------
+        section: (str) the name of the section.
+
+        Returns
+        ---------
+        node_id: (int) the id of the node.
+        """
         for i in range(len(self.nodes)):
             if section == self.nodes[i].section:
                 return self.nodes[i].node_id
