@@ -5,6 +5,8 @@ Each script represents a full conversation consisting of multiple nodes (see
 - Each script may use any number of nodes that are grouped into sections, which
   are determined by the branching paths in the script by using the `Choice` node
 - The script is responsible for ordering and linking the nodes together
+- The script also contains basic information about the conversation, such as a
+  list of speakers
 """
 
 
@@ -22,9 +24,10 @@ class Script:
     ------------
     script: (str) the script file (see `nodes.py` for formatting for each node).
     """
+    nodes = list()
+    speakers = list()
+    
     def __init__(self, script=""):
-        self.nodes = list()
-
         lines = script.split("\n")
 
         # Create an index of section names
@@ -37,8 +40,8 @@ class Script:
                 sections.append(line.strip(" :"))
 
         # Parse lines into nodes
-        current_section = ""
         n = 0
+        current_section = ""
 
         while n < len(lines):
             # Skip empty lines
@@ -95,6 +98,9 @@ class Script:
                 text = ":".join(lines[n].split(":")[1:]).strip()
 
                 self.nodes.append(Line(speaker, text, current_section))
+
+                if speaker not in self.speakers:
+                    self.speakers.append(speaker)
 
                 n += 1
         
