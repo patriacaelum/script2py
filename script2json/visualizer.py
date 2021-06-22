@@ -70,39 +70,45 @@ class Visualizer:
             self._update_filedir(self.filedir)
             time.sleep(self.interval)
 
-    def render(self, key):
-        """Creates the file outputs.
+    def write(self, filepath):
+        """Writes the file outputs.
 
         All three outputs are attempted to be created. This includes the JSON
         file, the dot file, and running GraphViz to create a PNG of the graph.
         """
-        with open(self.filepaths.script, "r") as file:
+        with open(filepath.script, "r") as file:
             script = Script(file.read())
 
-        with open(self.filepaths.json, "w") as file:
+        with open(filepath.json, "w") as file:
             try:
                 json.dump(script.to_json(), file)
-                print(f"Successfully updated JSON output to: {self.jsonfile}")
+                print(f"Successfully updated JSON output to: {filepath.json}")
             except Exception as json_error:
                 print(f"Warning: JSON output not updated due to error: {json_error}")
 
-        with open(self.filpaths.dot, "w") as file:
+        with open(filepath.dot, "w") as file:
             try:
                 file.write(script.to_dot())
-                print(f"Successfully update dot output to: {self.dotfile}")
+                print(f"Successfully update dot output to: {filepath.dot}")
             except Exception as dot_error:
                 print(f"Warning: dot output not updated due to error: {dot_error}")
 
         if self.render:
             process = subprocess.run(
-                ["dot", "-Tpng", self.filepaths.dot, "-o", self.filepaths.graph],
+                [
+                    "dot",
+                    "-Tpng",
+                    filepath.dot,
+                    "-o",
+                    filepath.graph
+                ],
                 check=True
             )
 
             if process.returncode == 1:
                 print(f"Warning: graph output not updated due to error: {process.stderr}")
             else:
-                print(f"Successfully updated GraphViz output to: {self.graphfile}")
+                print(f"Successfully updated GraphViz output to: {filepath.graph}")
 
         print("\nScript2JSON Visualizer running...press CTRL-C to stop")
 
@@ -116,13 +122,14 @@ class Visualizer:
         with os.scandir(filedir) as entries:
             for entry in entries:
                 key = entry.path
+                exists = self.filepaths.get(key) is not None
                 
-                if self.filepaths.get(key) is None:
+                if not exists and entry.name.lower().endswith(".s2j"):
                     self._add_filepath(entry)
-                    self.render(key)
-                elif entry.stat().st_mtime != self.filepaths[key].last_modified:
+                    self.write(self.filepaths[key])
+                elif exists and entry.stat().st_mtime != self.filepaths[key].last_modified:
                     self.filepaths[key].last_modified = entry.stat.st_mtime
-                    self.render(key)
+                    self.write(self.filepaths[key])
 
     def _add_filepath(self, entry):
         """Adds an entry to the dictionary of filepaths.
@@ -138,7 +145,7 @@ class Visualizer:
         """
         key = entry.path
         
-        if entry.isFile() and entry.name.lower().endswith(".s2j"):
+        if entry.is_file():
             self.filepaths[key] = Filepath(
                 script=key,
                 json=key.replace(".s2j", ".json"),
@@ -146,6 +153,6 @@ class Visualizer:
                 graph=key.replace(".s2j", ".png"),
                 last_modified=entry.stat().st_mtime
             )
-        elif entry.isDir():
+        elif entry.is_dir():
             self._update_filedir(key)
 

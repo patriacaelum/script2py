@@ -18,12 +18,12 @@ def main():
             "graph using Graphviz"
     )
     parser.add_argument(
-        "--filepath",
+        "--filedir",
         "-f",
         type=str,
         required=True,
-        help="path to the script file to parse",
-        dest="filepath"
+        help="path to the directory of script files",
+        dest="filedir"
     )
     parser.add_argument(
         "--interval",
@@ -36,7 +36,6 @@ def main():
     parser.add_argument(
         "--render",
         action="store_true",
-        type=bool,
         required=False,
         help="enables rendering dot files",
         dest="render"
@@ -44,7 +43,6 @@ def main():
     parser.add_argument(
         "--no-render",
         action="store_false",
-        type=bool,
         required=False,
         help="disables rendering dot files",
         dest="render"
@@ -56,7 +54,7 @@ def main():
     args = parser.parse_args()
 
     visualizer = Visualizer(
-        filepath=args.filepath,
+        filedir=args.filedir,
         interval=args.interval,
         render=args.render
     )
