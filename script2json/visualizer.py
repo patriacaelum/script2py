@@ -9,12 +9,10 @@ dot graph whenever the script file changes.
 """
 
 
-import json
 import os
-import subprocess
 import time
 
-from script import Script
+from scene import Scene
 
 
 class Visualizer:
@@ -42,13 +40,10 @@ class Visualizer:
     interval: (int) the number of seconds between checking if the files in the
               `filepath` has been updated.
     """
-    def __init__(self, filepath, interval=0):
-        self.filepath = os.path.abspath(filepath)
+    def __init__(self, filedir, interval=0, **kwargs):
+        self.filedir = os.path.abspath(filedir)
         self.interval = interval
-
-        self.jsonfile = self.filepath.replace(".s2j", ".json")
-        self.dotfile = self.filepath.replace(".s2j", ".dot")
-        self.graphfile = self.filepath.replace(".s2j", ".png")
+        self.scene = Scene(filedir, **kwargs)
 
     def run(self):
         """Runs the visualizer.
@@ -57,52 +52,12 @@ class Visualizer:
         script file has been updated by comparing the time the file was last
         modified.
         """
-        # Initial render
-        last_modified = os.stat(self.filepath).st_mtime
-        self.render_graph()
-
-        # Check if the file has been modified in timed intervals and render
         while True:
-            check_last_modified = os.stat(self.filepath).st_mtime
+            updated = self.scene.update()
 
-            if check_last_modified != last_modified:
-                last_modified = check_last_modified
-                self.render_graph()
-
+            if updated:
+                self.scene.write_master()
+                print("\nscript2json visualizer running...press CTRL-C to stop\n")
+                
             time.sleep(self.interval)
-
-    def render_graph(self):
-        """Creates the file outputs.
-
-        All three outputs are attempted to be created. This includes the JSON
-        file, the dot file, and running GraphViz to create a PNG of the graph.
-        """
-        with open(self.filepath, "r") as file:
-            script = Script(file.read())
-
-        with open(self.jsonfile, "w") as file:
-            try:
-                json.dump(script.to_json(), file)
-                print(f"Successfully updated JSON output to: {self.jsonfile}")
-            except Exception as json_error:
-                print(f"Warning: JSON output not updated due to error: {json_error}")
-
-        with open(self.dotfile, "w") as file:
-            try:
-                file.write(script.to_dot())
-                print(f"Successfully update dot output to: {self.dotfile}")
-            except Exception as dot_error:
-                print(f"Warning: dot output not updated due to error: {dot_error}")
-            
-        process = subprocess.run(
-            ["dot", "-Tpng", self.dotfile, "-o", self.graphfile],
-            check=True
-        )
-
-        if process.returncode == 1:
-            print(f"Warning: graph output not updated due to error: {process.stderr}")
-        else:
-            print(f"Successfully updated GraphViz output to: {self.graphfile}")
-
-        print("\nScript2JSON Visualizer running...press CTRL-C to stop")
 

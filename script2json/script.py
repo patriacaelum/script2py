@@ -5,6 +5,8 @@ Each script represents a full conversation consisting of multiple nodes (see
 - Each script may use any number of nodes that are grouped into sections, which
   are determined by the branching paths in the script by using the `Choice` node
 - The script is responsible for ordering and linking the nodes together
+- The script also contains basic information about the conversation, such as a
+  list of speakers
 """
 
 
@@ -22,9 +24,10 @@ class Script:
     ------------
     script: (str) the script file (see `nodes.py` for formatting for each node).
     """
-    def __init__(self, script=""):
+    def __init__(self, script="", **kwargs):
         self.nodes = list()
-
+        self.speakers = list()
+        
         lines = script.split("\n")
 
         # Create an index of section names
@@ -37,8 +40,8 @@ class Script:
                 sections.append(line.strip(" :"))
 
         # Parse lines into nodes
-        current_section = ""
         n = 0
+        current_section = ""
 
         while n < len(lines):
             # Skip empty lines
@@ -66,13 +69,17 @@ class Script:
                 key = lines[n].split("=")[0].split()[1]
                 value = "=".join(lines[n].split("=")[1:]).strip()
 
-                self.nodes.append(Setter(key, value, current_section))
+                self.nodes.append(
+                    Setter(key, value, section=current_section, **kwargs)
+                )
 
                 n += 1
             # Choice blocks span multiple lines and begin with the keyword
             # `CHOICE` with the choices in the format `SectionName: "Dialogue"`
             elif first_word == "CHOICE":
-                self.nodes.append(Choice(dict(), current_section))
+                self.nodes.append(
+                    Choice(dict(), section=current_section, **kwargs)
+                )
 
                 n += 1
                 first_word = lines[n].split()[0].strip(":")
@@ -94,7 +101,12 @@ class Script:
                 speaker = lines[n].split(":")[0].strip()
                 text = ":".join(lines[n].split(":")[1:]).strip()
 
-                self.nodes.append(Line(speaker, text, current_section))
+                self.nodes.append(
+                    Line(speaker, text, section=current_section, **kwargs)
+                )
+
+                if speaker not in self.speakers:
+                    self.speakers.append(speaker)
 
                 n += 1
         
