@@ -26,15 +26,18 @@ class Node:
 
     Parameters
     ------------
-    section: (str) the name of the group this node is in.
+    section:        (str) the name of the group this node is in.
+    textlength_max: (int) the maximum number of characters per line of text.
     """
     node_type = None
-    next_section = None
-    textlength_max = 80
-
-    def __init__(self, section):
+    
+    def __init__(self, section, textlength_max=80):
         self.node_id = id(self)
+
         self.section = section
+        self.textlength_max = textlength_max
+
+        self.next_section = None
 
     def to_dot(self):
         """Formats the node parameters for a dot graph.
@@ -103,11 +106,10 @@ class Line(Node):
     speaker: (str) name of the character speaking.
     text: (str) the line of text the character is saying.
     """
-
     node_type = "line"
 
-    def __init__(self, speaker="", text="", *args):
-        super().__init__(*args)
+    def __init__(self, speaker="", text="", **kwargs):
+        super().__init__(**kwargs)
 
         self.speaker = speaker
         self.text = self._format(text)
@@ -150,11 +152,10 @@ class Choice(Node):
     choices: (list) each element is a single key-value dictionary mapping the
         choice text to the id of the next node.
     """
-
     node_type = "choice"
 
-    def __init__(self, choices=dict(), *args):
-        super().__init__(*args)
+    def __init__(self, choices=dict(), **kwargs):
+        super().__init__(**kwargs)
 
         self.choices = {key: self._format(value) for key, value in choices.items()}
 
@@ -193,11 +194,10 @@ class Setter(Node):
 
     properties: (dict) key-value pairs of variables.
     """
-
     node_type = "setter"
 
-    def __init__(self, key="", value="", *args):
-        super().__init__(*args)
+    def __init__(self, key="", value="", **kwargs):
+        super().__init__(**kwargs)
 
         self.key = key
         self.value = value

@@ -1,7 +1,8 @@
 import json
 import os
+import subprocess
 
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 
 from script import Script
 
@@ -26,15 +27,14 @@ class Scene:
     filedir: (str) the directory where the scene files are stored.
     render:  (bool) renders the dot files using GraphViz if set to `True`.
     """
-    filedir = None
-    filepaths = dict()
-    json_output = dict()
-    render = True
-    subscenes = dict()
-    
-    def __init__(self, filedir, render=True):
+    def __init__(self, filedir, render=True, **kwargs):
         self.filedir = os.path.abspath(filedir)
         self.render = render
+        self.kwargs = kwargs
+
+        self.filepaths = dict()
+        self.json_output = defaultdict(dict)
+        self.subscenes = dict()
 
     def add_filepath(self, entry):
         """Adds an entry to the dictionary of filepaths.
@@ -60,8 +60,11 @@ class Scene:
         directory and for all subdirectories, it should be called only once by
         the `Visualizer`.
         """
-        with open(self.filedir + ".json", "w") as file:
-            json.dump(self.json_output)
+        masterfile = self.filedir + ".json"
+        with open(masterfile, "w") as file:
+            json.dump(self.json_output, file)
+
+        print(f"Successfully updated master JSON to: {masterfile}")
     
     def update(self):
         """Updates the dictionary of filepaths with the files in the directory
@@ -77,7 +80,7 @@ class Scene:
             for entry in entries:
                 key = entry.path
                 file_exists = self.filepaths.get(key) is not None
-                subscene_exists = self.subscenes.get(key) is not NOne
+                subscene_exists = self.subscenes.get(key) is not None
 
                 if file_exists and entry.stat().st_mtime != self.filepaths[key].last_modified:
                     self.filepaths[key].last_modified = entry.stat().st_mtime
@@ -91,15 +94,15 @@ class Scene:
 
                         updated = True
                     elif not subscene_exists and entry.is_dir():
-                        self.subscens[key] = Scene(key, self.render)
+                        self.subscenes[key] = Scene(key, self.render, **self.kwargs)
 
-        for dirpath, subscene in self.subscenes.items():
-            scene_updated = subscene.update()
+        for dirpath in self.subscenes.keys():
+            scene_updated = self.subscenes[dirpath].update()
 
             if scene_updated:
-                self.json_output[dirpath] = subscene.to_json()
+                self.json_output[dirpath] = self.subscenes[dirpath].json_output
 
-                upated = True
+                updated = True
 
         return updated
 
@@ -116,7 +119,7 @@ class Scene:
         """
         # Create the most recent version of the script
         with open(filepath.script, "r") as file:
-            script = Script(file.read())
+            script = Script(file.read(), **self.kwargs)
 
         # Create master JSON with the first two speakers as the first two keys
         speaker0 = script.speakers[0]

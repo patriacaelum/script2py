@@ -47,16 +47,26 @@ def main():
         help="disables rendering dot files",
         dest="render"
     )
+    parser.add_argument(
+        "--text-length",
+        "-t",
+        type=int,
+        required=False,
+        help="the maximum length of a line of text",
+        dest="textlength_max"
+    )
     parser.set_defaults(
         interval=0,
-        render=True
+        render=True,
+        textlength_max=80
     )
     args = parser.parse_args()
 
     visualizer = Visualizer(
         filedir=args.filedir,
         interval=args.interval,
-        render=args.render
+        render=args.render,
+        textlength_max=args.textlength_max
     )
     visualizer.run()
 

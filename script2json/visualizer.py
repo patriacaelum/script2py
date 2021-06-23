@@ -9,20 +9,10 @@ dot graph whenever the script file changes.
 """
 
 
-import json
 import os
-import subprocess
 import time
 
-from collections import namedtuple
-
-from script import Script
-
-
-Filepath = namedtuple(
-    "Filepath",
-    ["script", "json", "dot", "graph", "last_modified"]
-)
+from scene import Scene
 
 
 class Visualizer:
@@ -49,12 +39,7 @@ class Visualizer:
               extension.
     interval: (int) the number of seconds between checking if the files in the
               `filepath` has been updated.
-    render:   (bool) renders the dot files using GraphViz if set to `True`.
     """
-    interval = 0
-    filedir = None
-    scene = None
-
     def __init__(self, filedir, interval=0, **kwargs):
         self.filedir = os.path.abspath(filedir)
         self.interval = interval
@@ -72,6 +57,7 @@ class Visualizer:
 
             if updated:
                 self.scene.write_master()
+                print("\nscript2json visualizer running...press CTRL-C to stop\n")
                 
             time.sleep(self.interval)
 
