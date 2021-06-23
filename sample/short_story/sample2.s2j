@@ -1,3 +1,17 @@
-Start
+StartBranch
   Me: Hello
   You: Hey there, partner.
+
+  CHOICE
+    FriendlyBranch: How are you this fine morning?
+    AggressiveBranch: What do you want from me?
+
+FriendlyBranch
+  You: Why, I'm doing just fine.
+  Me: That's wonderful.
+  SET you.mood = calm
+
+AggressiveBranch
+  You: Hey, no need for hostility.
+  Me: Well, mind your own business then.
+  SET you.mood = annoyed

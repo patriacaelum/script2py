@@ -1,125 +1,125 @@
 digraph G {
 subgraph cluster_0{
 label = "Start";
-139733285780928 [label="Dad\nHow did this work again? Which one do I press...", shape=box];
-139733285779872 [label="Set\ndad.computer = on", shape=box];
-139733285780256 [label="Son\nDad! Hello? Can you hear me?", shape=box];
-139733285780736 [label="Dad\nJohnny, my boy! Can you hear me alright?", shape=box];
-139733285849840 [label="Son\nYeah, dad. I can hear you. Can you hear me?", shape=box];
-139733285849936 [label="Dad\nYes! Yes, it's good to hear you again, Johnny. How are you doing?", shape=box];
-139733285849792 [label="Son\nGood, dad. I'm doing good.", shape=box];
-139733285850224 [label="Dad\nLook! I got springrolls! I made 'em this morning, so they're damn ugly. The
+140030449666896 [label="Dad\nHow did this work again? Which one do I press...", shape=box];
+140030449666320 [label="Set\ndad.computer = on", shape=box];
+140030449666224 [label="Son\nDad! Hello? Can you hear me?", shape=box];
+140030449665840 [label="Dad\nJohnny, my boy! Can you hear me alright?", shape=box];
+140030449666992 [label="Son\nYeah, dad. I can hear you. Can you hear me?", shape=box];
+140030449665888 [label="Dad\nYes! Yes, it's good to hear you again, Johnny. How are you doing?", shape=box];
+140030449718560 [label="Son\nGood, dad. I'm doing good.", shape=box];
+140030449718656 [label="Dad\nLook! I got springrolls! I made 'em this morning, so they're damn ugly. The
 cooking ladies on the internet make everything look so easy.", shape=box];
-139733285849888 [label="Son\nIt looks really good, dad. You're getting a lot better at it.", shape=box];
-139733285850176 [label="Dad\nI'm gonna get you to try it once you can get home. I'll keep practicing. Maybe
+140030449718512 [label="Son\nIt looks really good, dad. You're getting a lot better at it.", shape=box];
+140030449719904 [label="Dad\nI'm gonna get you to try it once you can get home. I'll keep practicing. Maybe
 one of these days, they'll taste like your mom's.", shape=box];
-139733285849984 [label="Son\nYeah, that'd be great.", shape=box];
-139733285850032 [label="Dad\nWhat have you got, Johnny?", shape=box];
-139733285850128 [label="Choice\n0. As you can see, I just got the usual frozen microwave dinner.\n1. You know, I just got the usual frozen microwave dinner.", shape=box];
+140030449718944 [label="Son\nYeah, that'd be great.", shape=box];
+140030449718704 [label="Dad\nWhat have you got, Johnny?", shape=box];
+140030449720000 [label="Choice\n0. As you can see, I just got the usual frozen microwave dinner.\n1. You know, I just got the usual frozen microwave dinner.", shape=box];
 }
 subgraph cluster_1{
 label = "ShowBranch";
-139733285850080 [label="Set\nfather.mood = worried", shape=box];
-139733285850272 [label="Dad\nThat actually doesn't look half bad! You must be pretty busy, eh, Johnny?", shape=box];
-139733285850368 [label="Son\nYeah, work really tires me out.", shape=box];
+140030449718608 [label="Set\nfather.mood = worried", shape=box];
+140030449719856 [label="Dad\nThat actually doesn't look half bad! You must be pretty busy, eh, Johnny?", shape=box];
+140030449719952 [label="Son\nYeah, work really tires me out.", shape=box];
 }
 subgraph cluster_2{
 label = "TellBranch";
-139733285850416 [label="Set\nfather.mood = disappointed", shape=box];
-139733285850464 [label="Dad\nOh, Johnny. I keep tellin' you that those things aren't good for you. Full of
+140030449720048 [label="Set\nfather.mood = disappointed", shape=box];
+140030449720240 [label="Dad\nOh, Johnny. I keep tellin' you that those things aren't good for you. Full of
 plastic and chemicals. You gotta watch your health, or you'll regret it when you
 get to my age.", shape=box];
-139733285850512 [label="Son\nI know, dad. Work just really tires me out.", shape=box];
+140030449720192 [label="Son\nI know, dad. Work just really tires me out.", shape=box];
 }
 subgraph cluster_3{
 label = "Eat";
-139733285850560 [label="Dad\nWell, I'm starving. Let's eat.", shape=box];
-139733285850608 [label="Choice\n0. ...\n1. Yeah.", shape=box];
+140030449720096 [label="Dad\nWell, I'm starving. Let's eat.", shape=box];
+140030449720144 [label="Choice\n0. ...\n1. Yeah.", shape=box];
 }
 subgraph cluster_4{
 label = "SilenceBranch";
-139733285850656 [label="Set\nmood = awkward && stiff", shape=box];
-139733285850704 [label="Dad\nMunch munch munch...", shape=box];
-139733285850800 [label="Son\nMunch munch munch...", shape=box];
+140030449720336 [label="Set\nmood = awkward && stiff", shape=box];
+140030449720384 [label="Dad\nMunch munch munch...", shape=box];
+140030449720480 [label="Son\nMunch munch munch...", shape=box];
 }
 subgraph cluster_5{
 label = "ChatterBranch";
-139733285850848 [label="Set\nmood = warm && bright", shape=box];
-139733285850896 [label="Son\nSo, what else did you do today? Munch munch munch...", shape=box];
-139733285850944 [label="Dad\nMunch munch munch... Not a lot. I took a nap and watched some TV. There's never
+140030449720528 [label="Set\nmood = warm && bright", shape=box];
+140030449720576 [label="Son\nSo, what else did you do today? Munch munch munch...", shape=box];
+140030449720624 [label="Dad\nMunch munch munch... Not a lot. I took a nap and watched some TV. There's never
 anything interesting on anymore. Not things I like, anyway.", shape=box];
-139733285850992 [label="Son\nThat sounds nice. I think I'll have to do overtime again this weekend. Not
+140030449720672 [label="Son\nThat sounds nice. I think I'll have to do overtime again this weekend. Not
 looking forward to that. Munch munch munch...", shape=box];
-139733285851088 [label="Dad\nThey're working you half to death! Munch munch munch... You gotta find a place
+140030449720768 [label="Dad\nThey're working you half to death! Munch munch munch... You gotta find a place
 that treats you better, Johnny. I'm telling you, I never worked overtime like you
 do when I was your age.", shape=box];
-139733285851040 [label="Son\nI know, dad. I'm looking. Munch munch munch...", shape=box];
+140030449720816 [label="Son\nI know, dad. I'm looking. Munch munch munch...", shape=box];
 }
 subgraph cluster_6{
 label = "End";
-139733285888064 [label="Set\ndad.plate = empty", shape=box];
-139733285888112 [label="Set\nson.plate = empty", shape=box];
-139733285888160 [label="Dad\nCheers! Glug glug glug...", shape=box];
-139733285888208 [label="Son\nCheers! glug glug glug...", shape=box];
-139733285888256 [label="Dad\nIt was good seeing you again, Johnny. Make sure you get home whenever you can.
+140030449720720 [label="Set\ndad.plate = empty", shape=box];
+140030449720864 [label="Set\nson.plate = empty", shape=box];
+140030449720912 [label="Dad\nCheers! Glug glug glug...", shape=box];
+140030449720960 [label="Son\nCheers! glug glug glug...", shape=box];
+140030449721008 [label="Dad\nIt was good seeing you again, Johnny. Make sure you get home whenever you can.
 Come home soon.", shape=box];
-139733285888304 [label="Son\nI know, dad. It'll take some time, but I'm trying.", shape=box];
-139733285888400 [label="Set\ndad.face = fake_smile", shape=box];
-139733285888352 [label="Dad\nI know.", shape=box];
-139733285888448 [label="Set\nson.face = fake_smile", shape=box];
-139733285888496 [label="Son\nGoodnight, dad. I'll see again, same time next week.", shape=box];
-139733285888544 [label="Dad\nGoodnight.", shape=box];
-139733285888592 [label="Set\ndad.computer = off", shape=box];
-139733285888640 [label="Set\nson.computer = off", shape=box];
-139733285888688 [label="Son\n(Stands and walks away, tossing his plastic container into the trash.)", shape=box];
-139733285888736 [label="Dad\n(Looks out the window, then back at the black screen. Stands and shuffles to the
+140030449721056 [label="Son\nI know, dad. It'll take some time, but I'm trying.", shape=box];
+140030449721152 [label="Set\ndad.face = fake_smile", shape=box];
+140030449721104 [label="Dad\nI know.", shape=box];
+140030449721200 [label="Set\nson.face = fake_smile", shape=box];
+140030449721248 [label="Son\nGoodnight, dad. I'll see again, same time next week.", shape=box];
+140030449721296 [label="Dad\nGoodnight.", shape=box];
+140030449778752 [label="Set\ndad.computer = off", shape=box];
+140030449778800 [label="Set\nson.computer = off", shape=box];
+140030449778848 [label="Son\n(Stands and walks away, tossing his plastic container into the trash.)", shape=box];
+140030449778896 [label="Dad\n(Looks out the window, then back at the black screen. Stands and shuffles to the
 sink to clean the dishes. He drops a towel and reluctantly picks it up, tired,
 then continues on his way.)", shape=box];
 }
-139733285780928 -> 139733285779872;
-139733285779872 -> 139733285780256;
-139733285780256 -> 139733285780736;
-139733285780736 -> 139733285849840;
-139733285849840 -> 139733285849936;
-139733285849936 -> 139733285849792;
-139733285849792 -> 139733285850224;
-139733285850224 -> 139733285849888;
-139733285849888 -> 139733285850176;
-139733285850176 -> 139733285849984;
-139733285849984 -> 139733285850032;
-139733285850032 -> 139733285850128;
-139733285850128 -> 139733285850080 [label=0];
-139733285850128 -> 139733285850416 [label=1];
-139733285850080 -> 139733285850272;
-139733285850272 -> 139733285850368;
-139733285850368 -> 139733285850560;
-139733285850416 -> 139733285850464;
-139733285850464 -> 139733285850512;
-139733285850512 -> 139733285850560;
-139733285850560 -> 139733285850608;
-139733285850608 -> 139733285850656 [label=0];
-139733285850608 -> 139733285850848 [label=1];
-139733285850656 -> 139733285850704;
-139733285850704 -> 139733285850800;
-139733285850800 -> 139733285888064;
-139733285850848 -> 139733285850896;
-139733285850896 -> 139733285850944;
-139733285850944 -> 139733285850992;
-139733285850992 -> 139733285851088;
-139733285851088 -> 139733285851040;
-139733285851040 -> 139733285888064;
-139733285888064 -> 139733285888112;
-139733285888112 -> 139733285888160;
-139733285888160 -> 139733285888208;
-139733285888208 -> 139733285888256;
-139733285888256 -> 139733285888304;
-139733285888304 -> 139733285888400;
-139733285888400 -> 139733285888352;
-139733285888352 -> 139733285888448;
-139733285888448 -> 139733285888496;
-139733285888496 -> 139733285888544;
-139733285888544 -> 139733285888592;
-139733285888592 -> 139733285888640;
-139733285888640 -> 139733285888688;
-139733285888688 -> 139733285888736;
+140030449666896 -> 140030449666320;
+140030449666320 -> 140030449666224;
+140030449666224 -> 140030449665840;
+140030449665840 -> 140030449666992;
+140030449666992 -> 140030449665888;
+140030449665888 -> 140030449718560;
+140030449718560 -> 140030449718656;
+140030449718656 -> 140030449718512;
+140030449718512 -> 140030449719904;
+140030449719904 -> 140030449718944;
+140030449718944 -> 140030449718704;
+140030449718704 -> 140030449720000;
+140030449720000 -> 140030449718608 [label=0];
+140030449720000 -> 140030449720048 [label=1];
+140030449718608 -> 140030449719856;
+140030449719856 -> 140030449719952;
+140030449719952 -> 140030449720096;
+140030449720048 -> 140030449720240;
+140030449720240 -> 140030449720192;
+140030449720192 -> 140030449720096;
+140030449720096 -> 140030449720144;
+140030449720144 -> 140030449720336 [label=0];
+140030449720144 -> 140030449720528 [label=1];
+140030449720336 -> 140030449720384;
+140030449720384 -> 140030449720480;
+140030449720480 -> 140030449720720;
+140030449720528 -> 140030449720576;
+140030449720576 -> 140030449720624;
+140030449720624 -> 140030449720672;
+140030449720672 -> 140030449720768;
+140030449720768 -> 140030449720816;
+140030449720816 -> 140030449720720;
+140030449720720 -> 140030449720864;
+140030449720864 -> 140030449720912;
+140030449720912 -> 140030449720960;
+140030449720960 -> 140030449721008;
+140030449721008 -> 140030449721056;
+140030449721056 -> 140030449721152;
+140030449721152 -> 140030449721104;
+140030449721104 -> 140030449721200;
+140030449721200 -> 140030449721248;
+140030449721248 -> 140030449721296;
+140030449721296 -> 140030449778752;
+140030449778752 -> 140030449778800;
+140030449778800 -> 140030449778848;
+140030449778848 -> 140030449778896;
 }

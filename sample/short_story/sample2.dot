@@ -1,8 +1,29 @@
 digraph G {
 subgraph cluster_0{
-label = "Start";
-139733285780352 [label="Me\nHello", shape=box];
-139733285780016 [label="You\nHey there, partner.", shape=box];
+label = "StartBranch";
+140030449666416 [label="Me\nHello", shape=box];
+140030449666080 [label="You\nHey there, partner.", shape=box];
+140030449666800 [label="Choice\n0. How are you this fine morning?\n1. What do you want from me?", shape=box];
 }
-139733285780352 -> 139733285780016;
+subgraph cluster_1{
+label = "FriendlyBranch";
+140030449666320 [label="You\nWhy, I'm doing just fine.", shape=box];
+140030449666224 [label="Me\nThat's wonderful.", shape=box];
+140030449718560 [label="Set\nyou.mood = calm", shape=box];
+}
+subgraph cluster_2{
+label = "AggressiveBranch";
+140030449718656 [label="You\nHey, no need for hostility.", shape=box];
+140030449718512 [label="Me\nWell, mind your own business then.", shape=box];
+140030449718944 [label="Set\nyou.mood = annoyed", shape=box];
+}
+140030449666416 -> 140030449666080;
+140030449666080 -> 140030449666800;
+140030449666800 -> 140030449666320 [label=0];
+140030449666800 -> 140030449718656 [label=1];
+140030449666320 -> 140030449666224;
+140030449666224 -> 140030449718560;
+140030449718560 -> 140030449718656;
+140030449718656 -> 140030449718512;
+140030449718512 -> 140030449718944;
 }
