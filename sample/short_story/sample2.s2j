@@ -10,8 +10,13 @@ FriendlyBranch
   You: Why, I'm doing just fine.
   Me: That's wonderful.
   SET you.mood = calm
+  JUMP EndBranch
 
 AggressiveBranch
   You: Hey, no need for hostility.
   Me: Well, mind your own business then.
   SET you.mood = annoyed
+  JUMP EndBranch
+
+EndBranch
+  You: Goodbye. Have a good day.

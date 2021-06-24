@@ -6,13 +6,13 @@ specially tailored as a tool for a personal project.
 
 ### Usage
 
-Usage: `main.py [-h] --filedir FILEDIR [--interval INTERVAL] [--render] [--no-render] [--text-length TEXTLENGTH_MAX]`
+``` text
+Usage: main.py [-h] --filedir FILEDIR [--interval INTERVAL] [--render] [--no-render] [--text-length TEXTLENGTH_MAX]
 
 Translate a basic script to JSON and render a directed graph using Graphviz
 
 Optional arguments:
 
-``` text
   -h, --help            show this help message and exit
   --filedir FILEDIR, -f FILEDIR
                         path to the directory of script files
@@ -26,7 +26,7 @@ Optional arguments:
 
 ### Tutorial
 
-The script format consists of three types of statements:
+The script format consists of four types of statements:
 
 1. A `Line`, which consists of a speaker and dialogue. This takes the format
 
@@ -42,8 +42,15 @@ The script format consists of three types of statements:
    ```
    The branches will denote where the script continues depending on which choice
    is selected.
-1. A `Setter`, which consists of delimiter, followed by a variable name and its
-   new assigned value.
+1. A `JUMP` statement, which consists of a delimiter and the name of the target
+   branch. This may be useful for rejoining branches further down in the
+   conversation or for splitting a linear conversation into smaller segments.
+   This take the format
+   ```text
+   JUMP NextBranch
+   ```
+1. A `Setter`, which consists of a delimiter, followed by a variable name and
+   its new assigned value.
    ```text
    SET variable_name = new_value
    ```
@@ -68,11 +75,16 @@ FriendlyBranch
   You: Why, I'm doing just fine.
   Me: That's wonderful.
   SET you.mood = calm
+  JUMP EndBranch
 
 AggressiveBranch
   You: Hey, no need for hostility.
   Me: Well, mind your own business then.
   SET you.mood = annoyed
+  JUMP EndBranch
+  
+EndBranch
+  You: Goodbye. Have a good day.
 ```
 
 Here, there are three different branches. The first branch is the `Start`
