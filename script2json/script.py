@@ -193,9 +193,6 @@ class Script:
         else:
             next_id.append(self._next_section_id(self.nodes[n].next_section))
 
-        if len(next_id) == 0:
-            next_id = None
-            
         return next_id
 
     def _next_section_id(self, section):

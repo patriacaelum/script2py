@@ -1,14 +1,14 @@
 digraph G {
 subgraph cluster_0{
 label = "Start";
-139862488631424 [label="Man\nYou never know ahead of time what something's really going to be like.", shape=box];
-139862488631232 [label="Man\nSometimes it seems like life is as delicate as a dandelion.", shape=box];
-139862488631280 [label="Man\nOne little puff from any direction, and it is blown to bits.", shape=box];
-139862488631184 [label="Man\n...", shape=box];
-139862488631520 [label="Man\nShe loved you, you know. You were the best friend she's ever had.", shape=box];
+140458263138016 [label="Man\nYou never know ahead of time what something's really going to be like.", shape=box];
+140458263138256 [label="Man\nSometimes it seems like life is as delicate as a dandelion.", shape=box];
+140458263138064 [label="Man\nOne little puff from any direction, and it is blown to bits.", shape=box];
+140458263138208 [label="Man\n...", shape=box];
+140458263137824 [label="Man\nShe loved you, you know. You were the best friend she's ever had.", shape=box];
 }
-139862488631424 -> 139862488631232;
-139862488631232 -> 139862488631280;
-139862488631280 -> 139862488631184;
-139862488631184 -> 139862488631520;
+140458263138016 -> 140458263138256;
+140458263138256 -> 140458263138064;
+140458263138064 -> 140458263138208;
+140458263138208 -> 140458263137824;
 }
