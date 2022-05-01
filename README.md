@@ -1,4 +1,4 @@
-# scriptipy
+# scrip2py
 
 Script2Py is a simple terminal-based program that converts a script format (like
 for a theatre play or film screenplay) into JSON, dot, and PNG formats. This is
