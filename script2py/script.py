@@ -2,18 +2,20 @@
 
 Each script represents a full conversation consisting of multiple nodes (see
 `nodes.py`).
+
 - Each script may use any number of nodes that are grouped into sections, which
   are determined by the branching paths in the script by using the `Choice` node
 - The script is responsible for ordering and linking the nodes together
 - The script also contains basic information about the conversation, such as a
   list of speakers
+
 """
 
 
 from collections import defaultdict
 from itertools import groupby
 
-from nodes import Line, Choice, Setter
+from script2py.nodes import Line, Choice, Setter
 
 
 class Script:
@@ -24,91 +26,66 @@ class Script:
     ------------
     script: (str) the script file (see `nodes.py` for formatting for each node).
     """
-    def __init__(self, script="", **kwargs):
+    def __init__(self, filepath: str):
+        self.filepath = filepath
+
         self.nodes = list()
         self.speakers = list()
-        
-        lines = script.split("\n")
+        self.sections = dict()
 
-        # Create an index of section names
-        sections = list()
+    def clear(self):
+        """Clears the parsed data."""
+        self.nodes = list()
+        self.speakers = list()
+        self.sections = dict()
 
-        for line in lines:
-            # Sections are not indented, thus the first character is always
-            # alphanumeric
-            if line and line[0].isalpha():
-                sections.append(line.strip(" :"))
+    def update(self):
+        self.clear()
 
-        # Parse lines into nodes
-        n = 0
-        current_section = ""
+        with open(self.filepath, "r") as file:
+            script = file.readlines()
 
-        while n < len(lines):
-            # Skip empty lines
-            if not lines[n]:
-                n += 1
-                continue
+        self.nodes = self.parse(script)
 
-            # Set the current section
-            if lines[n].strip(" :") in sections:
-                current_section = lines[n].strip(" :")
-                n += 1
-                continue
+    def parse(self, script: list):
+        """Parses the contents of a script2py file (*.s2py) into nodes.
 
-            first_word = lines[n].split()[0].strip(":")
+        Parameters
+        ------------
+        script: list(str)
+            a list of lines of text.
 
-            # Jump statements retroactively set the previous node to the
-            # specified section
-            if first_word == "JUMP":
-                self.nodes[-1].next_section = " ".join(lines[n].split()[1:])
+        Returns
+        ---------
+        list(Node)
+            a list of `Node` objects that work like a linked list.
+        """
+        next_section_id = None
+        sections = self.parse_sections(script)
 
-                n += 1
-            # Setter nodes are a single line that begin with the keyword `SET` in
-            # the format `SET variable_name: variable_value`
-            elif first_word == "SET":
-                key = lines[n].split("=")[0].split()[1]
-                value = "=".join(lines[n].split("=")[1:]).strip()
+        for title, section in reversed(sections.items()):
+            blocks = self.parse_blocks(section)
 
-                self.nodes.append(
-                    Setter(key, value, section=current_section, **kwargs)
-                )
+            for block in reversed(blocks):
+                node, next_section = self.classify_block(block)
 
-                n += 1
-            # Choice blocks span multiple lines and begin with the keyword
-            # `CHOICE` with the choices in the format `SectionName: "Dialogue"`
-            elif first_word == "CHOICE":
-                self.nodes.append(
-                    Choice(dict(), section=current_section, **kwargs)
-                )
+                if node is not None:
+                    if next_section_id is not None:
+                        node.next_id = next_section_id
 
-                n += 1
-                first_word = lines[n].split()[0].strip(":")
+                    else:
+                        node.next_id = nodes[-1].node_id
 
-                while first_word in sections:
-                    key = ":".join(lines[n].split(":")[1:]).strip()
-                    value = lines[n].split(":")[0].strip()
+                    nodes.append(node)
 
-                    self.nodes[-1].choices[key] = value
+                # The next section id should be `None` unless the block is a
+                # goto block
+                next_section_id = self.sections.get(next_section)
 
-                    n+= 1
+            # The node id of each section is the first node in that section
+            self.sections[title] = nodes[-1].node_id
 
-                    if not lines[n]:
-                        break
-
-                    first_word = lines[n].split()[0].strip(":")
-            # Line nodes are a single line in the format `Speaker: "Dialogue"`
-            else:
-                speaker = lines[n].split(":")[0].strip()
-                text = ":".join(lines[n].split(":")[1:]).strip()
-
-                self.nodes.append(
-                    Line(speaker, text, section=current_section, **kwargs)
-                )
-
-                if speaker not in self.speakers:
-                    self.speakers.append(speaker)
-
-                n += 1
+        return list(reversed(nodes))
         
     def to_dot(self):
         """Creates the dot graph for the script.
@@ -166,49 +143,147 @@ class Script:
 
         return json_output
 
-    def _next_node(self, n):
-        """Searches for the id of the next node.
+    @staticmethod
+    def parse_sections(script: list):
+        """Parses the contents of a scrip2py file (*.s2py) into sections.
 
         Parameters
         ------------
-        n: (int) the index of the node in question.
+        script: list(str)
+            a list of lines of text.
 
         Returns
         ---------
-        next_id: (list or None) the id of the next node.
+        dict(list(str))
+            a dictionary with section titles as keys and the blocks of text that
+            are under that section.
         """
-        next_id = list()
+        sections = dict()
+        section_title = None
+        section_start = None
 
-        # Last node does not have a next node
-        if n + 1 == len(self.nodes):
-            pass
-        # Choice nodes have multiple possible next nodes
-        elif self.nodes[n].node_type == "choice":
-            for choice in self.nodes[n].choices.values():
-                next_id.append(self._next_section_id(choice))
-        # By default, assume the next node
-        elif self.nodes[n].next_section is None:
-            next_id.append(self.nodes[n + 1].node_id)
-        # Search for the next node with the specified section
-        else:
-            next_id.append(self._next_section_id(self.nodes[n].next_section))
+        for line_num, line in enumerate(script):
+            if line[:3] == "---":
+                section_title = script[line_num - 1]
+                section_start = line_num + 1
 
-        return next_id
+            elif line[:3] == "===":
+                sections[section_title] = script[section_start : line_num]
 
-    def _next_section_id(self, section):
-        """Searches for the id of the first node in the next section.
+                section_title = None
+                section_start = None
+
+        return sections
+
+    @staticmethod
+    def parse_blocks(section: list):
+        """Parses a section of text into blocks.
+
+        The parsing algorithm is bottom up and determines where a block begins
+        by looking for if a line starts with whitespace or a `#`, which denotes
+        a comment.
 
         Parameters
         ------------
-        section: (str) the name of the section.
+        section: list(str)
+            a section of text. The section should already be separated from its
+            delimiters using the `parse_sections()` method.
 
         Returns
         ---------
-        node_id: (int) the id of the node.
+        list(str)
+            a list of blocks of text.
         """
-        for i in range(len(self.nodes)):
-            if section == self.nodes[i].section:
-                return self.nodes[i].node_id
-        else:
-            raise RuntimeError(f"No future node with section name '{section}' could be found")
+        blocks = list()
+        block = list()
 
+        for line in reversed(section):
+            if len(line.strip()) == 0 or line[0] == "#":
+                # Ignore blanklines and comments
+                continue
+
+            elif line[0].isspace():
+                # Blocks with multiple lines should be indented
+                block.append(line)
+
+                continue
+
+            else:
+                block.append(line)
+                block = list(reversed(block))
+
+                # Join consecutive choice blocks
+                if block[0][:3] == "***" and blocks[-1][0][:3] == "***":
+                    blocks[-1] = block + blocks[-1]
+                
+                else:
+                    blocks.append(block)
+
+                block = list()
+
+        return list(reversed(blocks))
+
+    def classify_block(self, block: list):
+        """Classifies a block of text as one of the nodes.
+
+        Parameters
+        ------------
+        text: list(str)
+            the block of text to classify. 
+
+        Returns
+        ---------
+        Node
+            The `Node` class that fits the block of text. 
+        """
+        node = None
+        next_section = None
+
+        prefix = block[0][:3]
+
+        if prefix == "***":
+            # Choice block
+            choices = list()
+
+            for line in block:
+                line = line.strip()
+                prefix = line[:3]
+
+                if prefix == "***":
+                    speaker, text = line[3:].split(":", maxsplit=1)
+                    choices.append(
+                        {
+                            "speaker": speaker.strip(), 
+                            "text": text.strip(),
+                        }
+                    )
+
+                elif prefix == "-->":
+                    # Optional goto block
+                    goto_section = line[3:].strip()
+                    choices[-1]["next_id"] = self.sections[goto_section]
+
+                else:
+                    # Multi-line choice
+                    choices[-1]["text"] += " " + line
+
+            node = Choice(choices=choices)
+
+        elif prefix == "-->":
+            # Goto block
+            next_section = block[0][3:].strip()
+
+        elif prefix == "<<{":
+            # Setter block
+            key, value = block[0][3:-3].split("=")
+
+            node = Setter(key=key.strip(), value=value.strip())
+
+        else:
+            # Line block
+            block = "\n".join(block)
+            speaker, text = block.split(":", maxsplit=1)
+
+            node = Line(speaker=speaker.strip(), text=text.strip())
+
+        return node, next_section
