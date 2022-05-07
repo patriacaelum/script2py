@@ -76,12 +76,12 @@ class Node:
 
         Returns
         ---------
-        str
+        dict
             the JSON data for this node.
         """
         return {
-            "node_id": self.node_id,
             "type": self.node_type,
+            "node_id": self.node_id,
             "next_id": self.next_id,
         }
 
