@@ -12,6 +12,9 @@ Each script represents a full conversation consisting of multiple nodes (see
 """
 
 
+import os
+import subprocess
+
 from collections import defaultdict
 from itertools import groupby
 
@@ -24,10 +27,18 @@ class Script:
 
     Parameters
     ------------
-    script: (str) the script file (see `nodes.py` for formatting for each node).
+    filepath: str
+        the path to the script file.
+    last_modified: float
+        Time of the most recent content modification (in seconds).
     """
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str, last_modified: float):
         self.filepath = filepath
+        self.last_modified = last_modified
+
+        self.jsonfile = filepath.replace(".s2py", ".json")
+        self.dotfile = filepath.replace(".s2py", ".dot")
+        self.graphfile = filepath.replace(".s2py", ".png")
 
         self.nodes = list()
         self.speakers = set()
@@ -96,12 +107,32 @@ class Script:
         return json_output
 
     def update(self):
-        self._clear()
+        """Loads the script file from disk and writes the updated output to
+        json and dot files.
 
-        with open(self.filepath, "r") as file:
-            script = file.readlines()
+        Returns
+        ---------
+        bool
+            `True` if the script was updated, `False` otherwise.
+        """
+        updated = False
+        last_modified = os.stat(self.filepath).st_mtime
 
-        self.nodes = self._parse(script)
+        if self.last_modified != last_modified:
+            self._clear()
+
+            with open(self.filepath, "r") as file:
+                script = file.readlines()
+
+            self.nodes = self._parse(script)
+            self._write_json()
+            self._write_dot()
+            self._write_graphviz()
+
+            self.last_modified = last_modified
+            updated = True
+
+        return updated
 
     def _classify_block(self, block: list):
         """Classifies a block of text as one of the nodes.
@@ -297,3 +328,42 @@ class Script:
                 section_start = None
 
         return sections
+
+    def _write_dot(self):
+        """Writes the script as a dot file."""
+        with open(self.dotfile, "w") as file:
+            try:
+                file.write(self.to_dot())
+                print(f"Successfully updated dot output: {self.dotfile}")
+
+            except Exception as error:
+                print(f"Warning: failed to updated dot output: {error}")
+
+    def _write_graphviz(self):
+        """Writes the script as a graph using GraphViz."""
+        process = subprocess.run(
+            [
+                "dot",
+                "-Tpng",
+                self.dotfile,
+                "-o",
+                self.graphfile,
+            ],
+            check=True,
+        )
+
+        if process.returncode == 0:
+            print(f"Successfully updated graph output: {self.graphfile}")
+        
+        else:
+            print(f"Warning: failed to updated graph output: {process.stderr}")
+
+    def _write_json(self):
+        """Writes the script as a JSON file."""
+        with open(self.jsonfile, "w") as file:
+            try:
+                json.dump(self.to_json())
+                print(f"Successfully updated JSON output: {self.jsonfile}")
+            
+            except Exception as error:
+                print(f"Warning: failed to updated JSON output: {error}")
