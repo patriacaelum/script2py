@@ -172,7 +172,6 @@ class Choice(Node):
 
     ```
     *** SpeakerName: First Choice
-        SpeakerName: Another line
         --> Branch1
     *** SpeakerName: Second Choice
     ```
@@ -196,13 +195,6 @@ class Choice(Node):
             }
         ],
         "next_id": "0003"
-    },
-    {
-        "node_id": "0002",
-        "type": "line",
-        "speaker": "SpeakerName",
-        "text": "Another line",
-        "next_id": "0004"
     }
     ```
 
