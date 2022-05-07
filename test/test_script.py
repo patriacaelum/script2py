@@ -34,22 +34,27 @@ def branching_lines(branching_filepath):
 
 @pytest.fixture 
 def goto_next_section():
-    return "goto_next_section"
+    return "All About Eve"
 
 
 @pytest.fixture 
 def line_speaker():
-    return "speaker"
+    return "Eve Harrington"
 
 
 @pytest.fixture 
 def single_line_text():
-    return "single line text"
+    return "I don't know that I'd take you anywhere."
 
 
 @pytest.fixture 
 def multi_line_text():
-    return "multi\n    line\n    text"
+    return """So little? So little, did you say? Oh why, if there's nothing
+    else, there's applause; I've listened backstage to people applaud. It's
+    like... like waves of love coming over the footlights and wrapping you up.
+    Imagine, to know every night different hundreds of people love you; they
+    smile, their eyes shine, you please them, they want you, you belong. Just
+    that alone is worth anything."""
 
 
 @pytest.fixture 
@@ -94,12 +99,26 @@ def empty_script():
 
 @pytest.fixture 
 def static_script(static_filepath):
-    return Script(static_filepath)
+    script = Script(static_filepath)
+
+    yield script
+
+    # Teardown
+    os.remove(script.dotfile)
+    os.remove(script.graphfile)
+    os.remove(script.jsonfile)
 
 
 @pytest.fixture
 def branching_script(branching_filepath):
-    return Script(branching_filepath)
+    script = Script(branching_filepath)
+
+    yield script
+
+    # Teardown
+    os.remove(script.dotfile)
+    os.remove(script.graphfile)
+    os.remove(script.jsonfile)
 
 
 class TestScriptParsers:
@@ -279,7 +298,7 @@ class TestScriptClassifiers:
         }
         multi_line_choice = {
             "speaker": line_speaker,
-            "text": multi_line_text.replace("\n    ", " "),
+            "text": "So little? So little, did you say? Oh why, if there's nothing else, there's\napplause; I've listened backstage to people applaud. It's like... like waves of\nlove coming over the footlights and wrapping you up. Imagine, to know every\nnight different hundreds of people love you; they smile, their eyes shine, you\nplease them, they want you, you belong. Just that alone is worth anything.",
             "next_id": None,
         }
 
@@ -300,7 +319,7 @@ class TestScriptClassifiers:
         assert next_section is None
 
         assert node.speaker == line_speaker
-        assert node.text == " ".join([line.strip() for line in multi_line_text.split("\n")])
+        assert " ".join(node.text.splitlines()) == " ".join([line.strip() for line in multi_line_text.splitlines()])
         assert line_speaker in empty_script.speakers
 
     def test_classify_setter_block(self, empty_script, setter_block, setter_key, setter_value):
@@ -390,7 +409,11 @@ class TestScript:
         static_script.update()
         json_output = static_script.to_json()
 
-        for node in json_output[:-1]:
+        assert os.path.exists(static_script.dotfile)
+        assert os.path.exists(static_script.graphfile)
+        assert os.path.exists(static_script.jsonfile)
+
+        for node in json_output["nodes"][:-1]:
             node_type = node.get("type")
 
             assert isinstance(node_type, str)
@@ -414,7 +437,11 @@ class TestScript:
         branching_script.update()
         json_output = branching_script.to_json()
 
-        for node in json_output[:-1]:
+        assert os.path.exists(branching_script.dotfile)
+        assert os.path.exists(branching_script.graphfile)
+        assert os.path.exists(branching_script.jsonfile)
+
+        for node in json_output["nodes"][:-1]:
             node_type = node.get("type")
 
             assert isinstance(node_type, str)
