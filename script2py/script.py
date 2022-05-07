@@ -31,10 +31,14 @@ class Script:
         the path to the script file.
     last_modified: float
         Time of the most recent content modification (in seconds).
+    wrap: int
+        the maximum number of characters per line of text. Default wrapping
+        width is 80.
     """
-    def __init__(self, filepath: str, last_modified: float):
+    def __init__(self, filepath: str, last_modified: float = 0, wrap: int = 80):
         self.filepath = filepath
         self.last_modified = last_modified
+        self.wrap = wrap
 
         self.jsonfile = filepath.replace(".s2py", ".json")
         self.dotfile = filepath.replace(".s2py", ".dot")
@@ -99,10 +103,16 @@ class Script:
         list
             a list of nodes in JSON format.
         """
-        json_output = list()
+        nodes = list()
 
         for node in self.nodes:
-            json_output.append(node.to_json())
+            nodes.append(node.to_json())
+
+        json_output = {
+            "speakers": list(self.speakers),
+            "first_node": self.nodes[0].node_id,
+            "nodes": nodes,
+        }
         
         return json_output
 
@@ -179,7 +189,10 @@ class Script:
                     # Multi-line choice
                     choices[-1]["text"] += " " + line
 
-            node = Choice(choices=choices)
+            node = Choice(
+                choices=choices,
+                wrap=self.wrap,
+            )
 
         elif prefix == "-->":
             # Goto block
@@ -189,14 +202,23 @@ class Script:
             # Setter block
             key, value = block[0][3:-3].split("=")
 
-            node = Setter(key=key.strip(), value=value.strip())
+            node = Setter(
+                key=key.strip(), 
+                value=value.strip(),
+                wrap=self.wrap,
+            )
 
         else:
             # Line block
             block = "\n".join(block)
             speaker, text = block.split(":", maxsplit=1)
 
-            node = Line(speaker=speaker.strip(), text=text.strip())
+            node = Line(
+                speaker=speaker.strip(), 
+                text=text.strip(), 
+                wrap=self.wrap
+            )
+
             self.speakers.add(node.speaker)
 
 

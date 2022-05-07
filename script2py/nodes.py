@@ -99,10 +99,9 @@ class Node:
         str
             the cleaned line of text.
         """
-        cleaned =  " ".join([line.strip() for line in text.strip().split("\n")])
-        wrapped = "\n".join(textwrap.wrap(text=cleaned, width=self.wrap))
+        cleaned = " ".join([line.strip() for line in text.splitlines()])
 
-        return wrapped
+        return "\n".join(textwrap.wrap(text=cleaned, width=self.wrap))
 
 
 class Line(Node):

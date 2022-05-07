@@ -2,17 +2,18 @@
 
 The visualizer monitors a script file and creates the JSON file and renders the
 dot graph whenever the script file changes.
-- everytime the script file changes, a new `Script` object is created and the
-  file is reanalyzed, so that large scripts may take longer to process
-- everytime the script file is processed, there are three outputs, which is the
-  JSON file, the dot file, and the PNG file (if GraphViz is installed)
+
+- Every time the script file changes, the `Script` object is updated and the
+  file is reanalyzed, so large scripts may take longer to process.
+- Every time the script file is processed, there are three outputs: the JSON
+  file, the dot file, and the PNG file (if GraphViz is installed)
 """
 
 
 import os
 import time
 
-from scene import Scene
+from script import Script
 
 
 class Visualizer:
@@ -40,10 +41,14 @@ class Visualizer:
     interval: int
         the number of seconds between checking if the files in the `filepath`
         has been updated. Default value is `5` seconds.
+    wrap: int
+        the maximum number of characters per line of text. Default wrapping
+        width is 80.
     """
-    def __init__(self, dirpath, interval=5):
+    def __init__(self, dirpath, interval: int = 5, wrap: int = 80):
         self.dirpath = os.path.abspath(dirpath)
         self.interval = interval
+        self.wrap = wrap
 
         self.scripts = dict()
         self.subvisualizers = dict()
@@ -59,7 +64,6 @@ class Visualizer:
             updated = self._update()
 
             if updated:
-                self._update_json()
                 print("\nscript2json visualizer running...press CTRL-C to stop\n")
                 
             time.sleep(self.interval)
@@ -115,6 +119,7 @@ class Visualizer:
             self.scripts[filepath] = Script(
                 filepath=filepath,
                 last_modified=last_modified,
+                wrap=self.wrap,
             )
 
         script = self.scripts[filepath]
@@ -143,7 +148,10 @@ class Visualizer:
         dirpath = entry.path
 
         if dirpath not in self.subvisulizers.keys():
-            self.subvisualizers[dirpath] = Visualizer(filedir=dirpath)
+            self.subvisualizers[dirpath] = Visualizer(
+                pathdir=dirpath,
+                wrap=self.wrap,
+            )
 
         visualizer = self.subvisualizers[dirpath]
 
@@ -153,33 +161,3 @@ class Visualizer:
             visualizer._write_json()
 
         return updated
-
-    def _write_json(self):
-        """Updates the JSON data in the root directory.
-
-        Each script in the root directory and subdirectories are used. The first
-        two speakers are used as the keys. If the script is a monologue, then
-        both keys will be the same speaker.
-        """
-        json_output = dict()
-        for script in self.scripts.values():
-            speakers = script.speakers
-            speaker_0 = speakers[0]
-
-            if len(script.speakers) > 1:
-                speaker_1 = speakers[1]
-            
-            else:
-                speaker_1 = speakers[0]
-
-            json_output[speaker_0][speaker_1] = script.to_json()
-
-        jsonfile = self.dirpath + ".json"
-
-        with open(jsonfile, "w") as file:
-            try:
-                json.dump(json_output)
-                print(f"Successfully updated JSON output: {jsonfile}")
-            
-            except Exception as error:
-                print(f"Failed to update JSON output: {error}")
