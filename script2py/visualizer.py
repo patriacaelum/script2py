@@ -7,6 +7,7 @@ dot graph whenever the script file changes.
   file is reanalyzed, so large scripts may take longer to process.
 - Every time the script file is processed, there are three outputs: the JSON
   file, the dot file, and the PNG file (if GraphViz is installed)
+
 """
 
 
@@ -19,28 +20,13 @@ from script2py.script import Script
 class Visualizer:
     """Outputs a file for graphviz to turn into a directed graph.
 
-    digraph G {
-        subgraph S0 {
-            label = "Branch Name";
-            a0 -> a1 -> a2;
-        }
-        subgraph S1 {
-            label = "Branch Name";
-            b0 -> b1;
-        }
-        start -> a0;
-        start -> a1;
-        a2 -> end;
-        b1 -> end;
-    }
-
     Parameters
     ------------
     filepath: str
         the filepath where the script files (*.s2py) are.
     interval: int
-        the number of seconds between checking if the files in the `filepath`
-        has been updated. Default value is `5` seconds.
+        the number of seconds between checking if the files in the ``filepath``
+        has been updated. Default value is 5 seconds.
     wrap: int
         the maximum number of characters per line of text. Default wrapping
         width is 80.
@@ -78,7 +64,7 @@ class Visualizer:
         Returns
         ---------
         bool
-            `True` if one of the scripts was updated, `False` otherwise.
+            ``True`` if one of the scripts was updated, ``False`` otherwise.
         """
         updated = False
 
@@ -110,7 +96,7 @@ class Visualizer:
         Returns
         ---------
         bool
-            `True` if the script was updated, `False` otherwise.
+            ``True` if the script was updated, ``False`` otherwise.
         """
         updated = False
         filepath = entry.path
@@ -142,7 +128,7 @@ class Visualizer:
         Returns
         ---------
         bool
-            `True` if a script in the subdirectory was updated, `False`
+            ``True`` if a script in the subdirectory was updated, ``False``
             otherwise.
         """
         dirpath = entry.path

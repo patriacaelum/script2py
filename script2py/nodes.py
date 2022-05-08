@@ -3,11 +3,11 @@
 The nodes each represent a block in the script. The currently supported nodes
 are:
 
-- the base `Node`, which all nodes inherit from
-- the `Line` node, which stores a a line of dialogue from a speaker
-- the `Choice` node, which gives the player a choice and creates a branching
+- the base ``Node``, which all nodes inherit from
+- the ``Line`` node, which stores a a line of dialogue from a speaker
+- the ``Choice`` node, which gives the player a choice and creates a branching
   path
-- the `Setter` node, which changes a system parameter
+- the ``Setter`` node, which changes a system parameter
 
 """
 
@@ -20,15 +20,16 @@ class Node:
 
     Each node has the following properties:
 
-    - a `node_id`, which is created upon instantiation
-    - a `section`, which groups nodes together
-    - a `next_section`, which is only applicable for the last node in a section
+    - a ``node_id``, which is created upon instantiation
+    - a ``section``, which groups nodes together
+    - a ``next_section``, which is only applicable for the last node in a
+      section
 
     Each inherited class should:
 
-    - set the `node_type`
-    - format its displayed text using the `_format()` function
-    - add to the `to_dot()` and `to_json()` functions with its additional
+    - set the ``node_type``
+    - format its displayed text using the ``_clean()`` function
+    - add to the ``to_dot()`` and ``to_json()`` functions with its additional
       parameters
 
     Parameters
@@ -108,32 +109,28 @@ class Node:
 class Line(Node):
     """Displays a line from the specified speaker.
 
-    Script format:
+    Script format::
 
-    ```
-    SpeakerName: Line of text.
-    SpeakerName: Another line of text. This one extends to
-        more than one line.
-    ```
+        SpeakerName: Line of text.
+        SpeakerName: Another line of text. This one extends to
+            more than one line.
 
-    JSON format:
+    JSON format::
 
-    ```
-    {
-        "node_id": "0001",
-        "type": "line",
-        "speaker": "SpeakerName",
-        "text": "Line of text.",
-        "next_id": "0002"
-    },
-    {
-        "node_id": "0002",
-        "type": "line",
-        "speaker": "SpeakerName",
-        "text": "Another line of text. This one extends to more than one line.",
-        "next_id": null
-    }
-    ```
+        {
+            "node_id": "0001",
+            "type": "line",
+            "speaker": "SpeakerName",
+            "text": "Line of text.",
+            "next_id": "0002"
+        },
+        {
+            "node_id": "0002",
+            "type": "line",
+            "speaker": "SpeakerName",
+            "text": "Another line of text. This one extends to more than one line.",
+            "next_id": null
+        }
 
     Parameters
     ------------
@@ -173,35 +170,31 @@ class Line(Node):
 class Choice(Node):
     """Offers a choice to the player.
 
-    Script format:
+    Script format::
 
-    ```
-    *** SpeakerName: First Choice
-        --> Branch1
-    *** SpeakerName: Second Choice
-    ```
+        *** SpeakerName: First Choice
+            --> Branch1
+        *** SpeakerName: Second Choice
 
-    JSON format:
+    JSON format::
 
-    ```
-    {
-        "node_id": "0001",
-        "type": "choice",
-        "choices": [
-            {
-                "speaker": "SpeakerName",
-                "choice": "First Choice",
-                "next_id": "0002"
-            },
-            {
-                "speaker": "SpeakerName",
-                "choice": "Second Choice",
-                "next_id": "0003"
-            }
-        ],
-        "next_id": "0003"
-    }
-    ```
+        {
+            "node_id": "0001",
+            "type": "choice",
+            "choices": [
+                {
+                    "speaker": "SpeakerName",
+                    "choice": "First Choice",
+                    "next_id": "0002"
+                },
+                {
+                    "speaker": "SpeakerName",
+                    "choice": "Second Choice",
+                    "next_id": "0003"
+                }
+            ],
+            "next_id": "0003"
+        }
 
     If no branch is specified, the next node will be assumed to be the next
     node in the script.
@@ -247,32 +240,29 @@ class Choice(Node):
 class Setter(Node):
     """Sets a variable to a value.
 
-    Script format:
+    Script format::
 
-    ```
-    <<{ variable_name = "variable value" }>>
-    <<{ variable_name = 10 }>>
-    ```
+        <<{ variable_name = "variable value" }>>
+        <<{ variable_name = 10 }>>
 
-    JSON format
-    ```
-    {
-        "node_id": "0001",
-        "type": "setter",
-        "setter": {
-            "variable_name": "variable value"
+    JSON format::
+
+        {
+            "node_id": "0001",
+            "type": "setter",
+            "setter": {
+                "variable_name": "variable value"
+            },
+            "next_id": "0002"
         },
-        "next_id": "0002"
-    },
-    {
-        "node_id": "0002",
-        "type": "setter",
-        "setter": {
-            "variable_name": 10
-        },
-        "next_id": null
-    }
-    ```
+        {
+            "node_id": "0002",
+            "type": "setter",
+            "setter": {
+                "variable_name": 10
+            },
+            "next_id": null
+        }
 
     Parameters
     ------------
