@@ -1,0 +1,34 @@
+digraph G {
+subgraph cluster_0 {
+label=<<b>StartBranch</b>> fontsize="24pt";
+140156120321280 [label=<<table border="0"><tr><td><b>Me</b></td></tr><tr><td align="left">Hello</td></tr></table>>, shape=box];
+140156120321328 [label=<<table border="0"><tr><td><b>You</b></td></tr><tr><td align="left">Hey there, partner.</td></tr></table>>, shape=box];
+140156120321472 [label=<<table border="0" cellborder="0"><tr><td align="left">0. How are you this fine morning?</td></tr><tr><td align="left">1. What do you want from me?</td></tr></table>>, shape=diamond];
+}
+subgraph cluster_1 {
+label=<<b>FriendlyBranch</b>> fontsize="24pt";
+140156120321520 [label=<<table border="0"><tr><td><b>You</b></td></tr><tr><td align="left">Why, I'm doing just fine.</td></tr></table>>, shape=box];
+140156120321568 [label=<<table border="0"><tr><td><b>Me</b></td></tr><tr><td align="left">That's wonderful.</td></tr></table>>, shape=box];
+140156120321376 [label="you.mood = calm", shape=ellipse];
+}
+subgraph cluster_2 {
+label=<<b>AggressiveBranch</b>> fontsize="24pt";
+140156120321664 [label=<<table border="0"><tr><td><b>You</b></td></tr><tr><td align="left">Hey, no need for hostility.</td></tr></table>>, shape=box];
+140156120321616 [label=<<table border="0"><tr><td><b>Me</b></td></tr><tr><td align="left">Well, mind your own business then.</td></tr></table>>, shape=box];
+140156120321808 [label="you.mood = annoyed", shape=ellipse];
+}
+subgraph cluster_3 {
+label=<<b>EndBranch</b>> fontsize="24pt";
+140156120321424 [label=<<table border="0"><tr><td><b>You</b></td></tr><tr><td align="left">Goodbye. Have a good day.</td></tr></table>>, shape=box];
+}
+140156120321280 -> 140156120321328;
+140156120321328 -> 140156120321472;
+140156120321472 -> 140156120321520 [label = 0];
+140156120321472 -> 140156120321664 [label = 1];
+140156120321520 -> 140156120321568;
+140156120321568 -> 140156120321376;
+140156120321376 -> 140156120321424;
+140156120321664 -> 140156120321616;
+140156120321616 -> 140156120321808;
+140156120321808 -> 140156120321424;
+}

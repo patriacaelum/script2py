@@ -1,0 +1,118 @@
+digraph G {
+subgraph cluster_0 {
+label=<<b>Start</b>> fontsize="24pt";
+140156120328336 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">How did this work again? Which one do I press...</td></tr></table>>, shape=box];
+140156120328384 [label="dad.computer = on", shape=ellipse];
+140156120328432 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Dad! Hello? Can you hear me?</td></tr></table>>, shape=box];
+140156120328480 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Johnny, my boy! Can you hear me alright?</td></tr></table>>, shape=box];
+140156120328528 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Yeah, dad. I can hear you. Can you hear me?</td></tr></table>>, shape=box];
+140156120328576 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Yes! Yes, it's good to hear you again, Johnny. How are you doing?</td></tr></table>>, shape=box];
+140156120328624 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Good, dad. I'm doing good.</td></tr></table>>, shape=box];
+140156120328672 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Look! I got springrolls! I made 'em this morning, so they're damn ugly.  The</td></tr><tr><td align="left">cooking ladies on the internet make everything look so easy.</td></tr></table>>, shape=box];
+140156120328720 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">It looks really good, dad. You're getting a lot better at it.</td></tr></table>>, shape=box];
+140156120328768 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">I'm gonna get you to try it once you can get home. I'll keep practicing.  Maybe</td></tr><tr><td align="left">one of these days, they'll taste like your mom's.</td></tr></table>>, shape=box];
+140156120328816 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Yeah, that'd be great.</td></tr></table>>, shape=box];
+140156120328864 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">What have you got, Johnny?</td></tr></table>>, shape=box];
+140156120328912 [label=<<table border="0" cellborder="0"><tr><td align="left">0. As you can see, I just got the usual frozen microwave dinner.</td></tr><tr><td align="left">1. You know, I just got the usual frozen microwave dinner.</td></tr></table>>, shape=diamond];
+}
+subgraph cluster_1 {
+label=<<b>ShowBranch</b>> fontsize="24pt";
+140156120328960 [label="father.mood = worried", shape=ellipse];
+140156120329008 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">That actually doesn't look half bad! You must be pretty busy, eh, Johnny?</td></tr></table>>, shape=box];
+140156120329056 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Yeah, work really tires me out.</td></tr></table>>, shape=box];
+}
+subgraph cluster_2 {
+label=<<b>TellBranch</b>> fontsize="24pt";
+140156120329104 [label="father.mood = disappointed", shape=ellipse];
+140156120329152 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Oh, Johnny. I keep tellin' you that those things aren't good for you. Full  of</td></tr><tr><td align="left">plastic and chemicals. You gotta watch your health, or you'll regret it  when</td></tr><tr><td align="left">you get to my age.</td></tr></table>>, shape=box];
+140156120329200 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">I know, dad. Work just really tires me out.</td></tr></table>>, shape=box];
+}
+subgraph cluster_3 {
+label=<<b>Eat</b>> fontsize="24pt";
+140156120329248 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Well, I'm starving. Let's eat.</td></tr></table>>, shape=box];
+140156120329296 [label=<<table border="0" cellborder="0"><tr><td align="left">0. ...</td></tr><tr><td align="left">1. Yeah.</td></tr></table>>, shape=diamond];
+}
+subgraph cluster_4 {
+label=<<b>SilenceBranch</b>> fontsize="24pt";
+140156120329344 [label="father.mood = awkward", shape=ellipse];
+140156120329392 [label="son.mood = stiff", shape=ellipse];
+140156120329440 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Munch munch munch...</td></tr></table>>, shape=box];
+140156120329488 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Munch munch munch...</td></tr></table>>, shape=box];
+}
+subgraph cluster_5 {
+label=<<b>ChatterBranch</b>> fontsize="24pt";
+140156120329536 [label="father.mood = warm", shape=ellipse];
+140156120329584 [label="son.mood = bright", shape=ellipse];
+140156120329632 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">So, what else did you do today? Munch munch munch...</td></tr></table>>, shape=box];
+140156120329680 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Munch munch munch... Not a lot. I took a nap and watched some TV.  There's never</td></tr><tr><td align="left">anything interesting on anymore. Not things I like, anyway.</td></tr></table>>, shape=box];
+140156120329728 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">That sounds nice. I think I'll have to do overtime again this weekend. Not</td></tr><tr><td align="left">looking forward to that. Munch munch munch...</td></tr></table>>, shape=box];
+140156120329776 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">They're working you half to death! Munch munch munch... You gotta find a  place</td></tr><tr><td align="left">that treats you better, Johnny. I'm telling you, I never worked  overtime like</td></tr><tr><td align="left">you do when I was your age.</td></tr></table>>, shape=box];
+140156120329824 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">I know, dad. I'm looking. Munch munch munch...</td></tr></table>>, shape=box];
+}
+subgraph cluster_6 {
+label=<<b>End</b>> fontsize="24pt";
+140156120329872 [label="dad.plate = empty", shape=ellipse];
+140156120329920 [label="son.plate = empty", shape=ellipse];
+140156120329968 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Cheers! Glug glug glug...</td></tr></table>>, shape=box];
+140156120330016 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Cheers! glug glug glug...</td></tr></table>>, shape=box];
+140156120330064 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">It was good seeing you again, Johnny. Make sure you get home whenever you  can.</td></tr><tr><td align="left">Come home soon.</td></tr></table>>, shape=box];
+140156120330112 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">I know, dad. It'll take some time, but I'm trying.</td></tr></table>>, shape=box];
+140156120330160 [label="dad.face = fake_smile", shape=ellipse];
+140156120330208 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">I know.</td></tr></table>>, shape=box];
+140156120330256 [label="son.face = fake_smile", shape=ellipse];
+140156120330400 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">Goodnight, dad. I'll see again, same time next week.</td></tr></table>>, shape=box];
+140156120330448 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">Goodnight.</td></tr></table>>, shape=box];
+140156120330496 [label="dad.computer = off", shape=ellipse];
+140156120330304 [label="son.computer = off", shape=ellipse];
+140156120330592 [label=<<table border="0"><tr><td><b>Son</b></td></tr><tr><td align="left">(Stands and walks away, tossing his plastic container into the trash.)</td></tr></table>>, shape=box];
+140156120330544 [label=<<table border="0"><tr><td><b>Dad</b></td></tr><tr><td align="left">(Looks out the window, then back at the black screen. Stands and shuffles  to</td></tr><tr><td align="left">the sink to clean the dishes. He drops a towel and reluctantly picks it  up,</td></tr><tr><td align="left">tired, then continues on his way.)</td></tr></table>>, shape=box];
+}
+140156120328336 -> 140156120328384;
+140156120328384 -> 140156120328432;
+140156120328432 -> 140156120328480;
+140156120328480 -> 140156120328528;
+140156120328528 -> 140156120328576;
+140156120328576 -> 140156120328624;
+140156120328624 -> 140156120328672;
+140156120328672 -> 140156120328720;
+140156120328720 -> 140156120328768;
+140156120328768 -> 140156120328816;
+140156120328816 -> 140156120328864;
+140156120328864 -> 140156120328912;
+140156120328912 -> 140156120328960 [label = 0];
+140156120328912 -> 140156120329104 [label = 1];
+140156120328960 -> 140156120329008;
+140156120329008 -> 140156120329056;
+140156120329056 -> 140156120329248;
+140156120329104 -> 140156120329152;
+140156120329152 -> 140156120329200;
+140156120329200 -> 140156120329248;
+140156120329248 -> 140156120329296;
+140156120329296 -> 140156120329344 [label = 0];
+140156120329296 -> 140156120329536 [label = 1];
+140156120329344 -> 140156120329392;
+140156120329392 -> 140156120329440;
+140156120329440 -> 140156120329488;
+140156120329488 -> 140156120329872;
+140156120329536 -> 140156120329584;
+140156120329584 -> 140156120329632;
+140156120329632 -> 140156120329680;
+140156120329680 -> 140156120329728;
+140156120329728 -> 140156120329776;
+140156120329776 -> 140156120329824;
+140156120329824 -> 140156120329872;
+140156120329872 -> 140156120329920;
+140156120329920 -> 140156120329968;
+140156120329968 -> 140156120330016;
+140156120330016 -> 140156120330064;
+140156120330064 -> 140156120330112;
+140156120330112 -> 140156120330160;
+140156120330160 -> 140156120330208;
+140156120330208 -> 140156120330256;
+140156120330256 -> 140156120330400;
+140156120330400 -> 140156120330448;
+140156120330448 -> 140156120330496;
+140156120330496 -> 140156120330304;
+140156120330304 -> 140156120330592;
+140156120330592 -> 140156120330544;
+}

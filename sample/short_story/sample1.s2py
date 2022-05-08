@@ -1,0 +1,38 @@
+StartBranch
+-------------
+Me: Hello
+You: Hey there, partner.
+
+*** Me: How are you this fine morning?
+    --> FriendlyBranch
+*** Me: What do you want from me?
+    --> AggressiveBranch
+=============
+
+
+FriendlyBranch
+----------------
+You: Why, I'm doing just fine.
+Me: That's wonderful.
+
+<<{ you.mood = calm }>>
+
+--> EndBranch
+================
+
+
+AggressiveBranch
+------------------
+You: Hey, no need for hostility.
+Me: Well, mind your own business then.
+
+<<{ you.mood = annoyed }>>
+
+--> EndBranch
+==================
+
+
+EndBranch
+-----------
+You: Goodbye. Have a good day.
+===========

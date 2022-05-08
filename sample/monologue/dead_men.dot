@@ -1,12 +1,12 @@
 digraph G {
-subgraph cluster_0{
-label = "Start";
-140458263138208 [label="Skully\nDead men tell no tales.", shape=box];
-140458263137824 [label="Skully\nFortunately, I am a woman.", shape=box];
-140458263136720 [label="Skully\nI'll let you in on a little secret. Lean in closer.", shape=box];
-140458263137584 [label="Skully\nI'm a Halloween decoration.", shape=box];
+subgraph cluster_0 {
+label=<<b>Start</b>> fontsize="24pt";
+140156120332128 [label=<<table border="0"><tr><td><b>Skully</b></td></tr><tr><td align="left">Dead men tell no tales.</td></tr></table>>, shape=box];
+140156120331648 [label=<<table border="0"><tr><td><b>Skully</b></td></tr><tr><td align="left">Fortunately, I am a woman.</td></tr></table>>, shape=box];
+140156120333712 [label=<<table border="0"><tr><td><b>Skully</b></td></tr><tr><td align="left">I'll let you in on a little secret. Lean in closer.</td></tr></table>>, shape=box];
+140156120334192 [label=<<table border="0"><tr><td><b>Skully</b></td></tr><tr><td align="left">I'm a Halloween decoration.</td></tr></table>>, shape=box];
 }
-140458263138208 -> 140458263137824;
-140458263137824 -> 140458263136720;
-140458263136720 -> 140458263137584;
+140156120332128 -> 140156120331648;
+140156120331648 -> 140156120333712;
+140156120333712 -> 140156120334192;
 }
