@@ -9,10 +9,10 @@ Making A Decision
 Narrator: Let's cut to the chase: do you prefer film or theatre?
 
 *** Watcher: Film.
-    <<{ watcher.preference = film }>>
+
 
 *** Watcher: Theatre.
-    <<{ watcher.preference = theatre }>>
+
 
 Narrator: Alright, let's test that. Which of these have you heard of?
 

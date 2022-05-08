@@ -207,7 +207,7 @@ class TestScriptParsers:
         blocks = [
             [
                 branching_lines[8:9],
-                branching_lines[10:12] + branching_lines[13:15],
+                branching_lines[10:11] + branching_lines[13:14],
                 branching_lines[16:17],
                 branching_lines[18:20] + branching_lines[21:23] + branching_lines[24:25],
                 branching_lines[26:27],
