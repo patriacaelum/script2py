@@ -15,7 +15,7 @@ from script2py.visualizer import Visualizer
 def main():
     parser = ArgumentParser(
         description="Translate a basic script to JSON and render a directed"
-            "graph using Graphviz"
+        "graph using Graphviz"
     )
 
     parser.add_argument(
@@ -24,7 +24,7 @@ def main():
         type=str,
         required=True,
         help="path to the directory of script files",
-        dest="dirpath"
+        dest="dirpath",
     )
 
     parser.add_argument(
@@ -33,7 +33,7 @@ def main():
         type=int,
         required=False,
         help="number of seconds between checking if the files have been updated",
-        dest="interval"
+        dest="interval",
     )
 
     parser.add_argument(
@@ -42,13 +42,10 @@ def main():
         type=int,
         required=False,
         help="the maximum length of a line of text",
-        dest="wrap"
+        dest="wrap",
     )
 
-    parser.set_defaults(
-        interval=5,
-        wrap=80
-    )
+    parser.set_defaults(interval=5, wrap=80)
 
     args = parser.parse_args()
 

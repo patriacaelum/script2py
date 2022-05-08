@@ -36,6 +36,7 @@ class Script:
         the maximum number of characters per line of text. Default wrapping
         width is 80.
     """
+
     def __init__(self, filepath: str, last_modified: float = 0, wrap: int = 80):
         self.filepath = filepath
         self.last_modified = last_modified
@@ -48,7 +49,7 @@ class Script:
         self.nodes = list()
         self.speakers = set()
         self.sections = dict()
-        
+
     def to_dot(self):
         """Creates the dot graph for the script.
 
@@ -59,13 +60,15 @@ class Script:
         """
         # Define all nodes with their sections as subgraphs
         subgraphs = list()
-        
-        for s, (section, group) in enumerate(groupby(self.nodes, key=lambda x: x.section)):
+
+        for s, (section, group) in enumerate(
+            groupby(self.nodes, key=lambda x: x.section)
+        ):
             subgraphs.append(
                 "\n".join(
                     [
                         f"subgraph cluster_{s}" + " {",
-                        f"label=<<b>{section}</b>> fontsize=\"24pt\";",
+                        f'label=<<b>{section}</b>> fontsize="24pt";',
                         "\n".join([node.to_dot() for node in group]),
                         "}",
                     ]
@@ -90,15 +93,12 @@ class Script:
                     dot_edges.append(f"{node.node_id} -> {node.next_id};")
 
         # Define directional graph
-        dot_output = "\n".join([
-            "digraph G {",
-            dot_subgraphs,
-            "\n".join(dot_edges),
-            "}"
-        ])
+        dot_output = "\n".join(
+            ["digraph G {", dot_subgraphs, "\n".join(dot_edges), "}"]
+        )
 
         return dot_output
-    
+
     def to_json(self):
         """Creates the JSON data for the script.
 
@@ -117,7 +117,7 @@ class Script:
             "first_node": self.nodes[0].node_id,
             "nodes": nodes,
         }
-        
+
         return json_output
 
     def update(self):
@@ -154,12 +154,12 @@ class Script:
         Parameters
         ------------
         text: list(str)
-            the block of text to classify. 
+            the block of text to classify.
 
         Returns
         ---------
         Node
-            The `Node` class that fits the block of text. 
+            The `Node` class that fits the block of text.
         """
         node = None
         next_section = None
@@ -178,7 +178,7 @@ class Script:
                     speaker, text = line[3:].split(":", maxsplit=1)
                     choices.append(
                         {
-                            "speaker": speaker.strip(), 
+                            "speaker": speaker.strip(),
                             "text": text.strip(),
                         }
                     )
@@ -207,7 +207,7 @@ class Script:
             key, value = block[0].strip()[3:-3].split("=")
 
             node = Setter(
-                key=key.strip(), 
+                key=key.strip(),
                 value=value.strip(),
                 wrap=self.wrap,
             )
@@ -217,14 +217,9 @@ class Script:
             block = "\n".join(block)
             speaker, text = block.split(":", maxsplit=1)
 
-            node = Line(
-                speaker=speaker.strip(), 
-                text=text.strip(), 
-                wrap=self.wrap
-            )
+            node = Line(speaker=speaker.strip(), text=text.strip(), wrap=self.wrap)
 
             self.speakers.add(node.speaker)
-
 
         return node, next_section
 
@@ -315,9 +310,13 @@ class Script:
                 block = list(reversed(block))
 
                 # Join consecutive choice blocks
-                if block[0][:3] == "***" and len(blocks) > 0 and blocks[-1][0][:3] == "***":
+                if (
+                    block[0][:3] == "***"
+                    and len(blocks) > 0
+                    and blocks[-1][0][:3] == "***"
+                ):
                     blocks[-1] = block + blocks[-1]
-                
+
                 else:
                     blocks.append(block)
 
@@ -350,7 +349,7 @@ class Script:
                 section_start = line_num + 1
 
             elif line[:3] == "===":
-                sections[section_title] = script[section_start : line_num]
+                sections[section_title] = script[section_start:line_num]
 
                 section_title = None
                 section_start = None
@@ -382,7 +381,7 @@ class Script:
 
         if process.returncode == 0:
             print(f"Successfully updated graph output: {self.graphfile}")
-        
+
         else:
             print(f"Warning: failed to updated graph output: {process.stderr}")
 
@@ -392,6 +391,6 @@ class Script:
             try:
                 json.dump(self.to_json(), file)
                 print(f"Successfully updated JSON output: {self.jsonfile}")
-            
+
             except Exception as error:
                 print(f"Warning: failed to updated JSON output: {error}")

@@ -45,6 +45,7 @@ class Visualizer:
         the maximum number of characters per line of text. Default wrapping
         width is 80.
     """
+
     def __init__(self, dirpath, interval: int = 5, wrap: int = 80):
         self.dirpath = os.path.abspath(dirpath)
         self.interval = interval
@@ -65,7 +66,7 @@ class Visualizer:
 
             if updated:
                 print("\nscript2json visualizer running...press CTRL-C to stop\n")
-                
+
             time.sleep(self.interval)
 
     def _update(self):
@@ -87,7 +88,7 @@ class Visualizer:
 
                 if entry.is_file() and entry.name.endswith(".s2py"):
                     entry_updated = self._update_script(entry)
-                
+
                 elif entry.is_dir():
                     entry_updated = self._update_subvisualizer(entry)
 

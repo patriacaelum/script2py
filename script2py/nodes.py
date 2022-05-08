@@ -44,14 +44,15 @@ class Node:
         the maximum number of characters per line of text. Default wrapping
         width is 80.
     """
+
     node_type = "node"
-    
+
     def __init__(
-        self, 
-        next_id: str = None, 
-        section: str = "", 
-        next_section: str = None, 
-        wrap: int = 80
+        self,
+        next_id: str = None,
+        section: str = "",
+        next_section: str = None,
+        wrap: int = 80,
     ):
         self.node_id = str(id(self))
         self.next_id = next_id
@@ -143,6 +144,7 @@ class Line(Node):
     kwargs:
         keyword arguments passed to the base class `Node`.
     """
+
     node_type = "line"
 
     def __init__(self, speaker: str = "", text: str = "", **kwargs):
@@ -152,16 +154,18 @@ class Line(Node):
         self.text = self._clean(text)
 
     def to_dot(self):
-        text = "".join([f"<tr><td align=\"left\">{line}</td></tr>" for line in self.text.splitlines()])
-        return f"{self.node_id} [label=<<table border=\"0\"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>, shape=box];"
-        # return f"{self.node_id} [label=\"{self.speaker}\\n{self.text}\", shape=box];"
+        text = "".join(
+            [
+                f'<tr><td align="left">{line}</td></tr>'
+                for line in self.text.splitlines()
+            ]
+        )
+
+        return f'{self.node_id} [label=<<table border="0"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>, shape=box];'
 
     def to_json(self):
         json_node = super().to_json()
-        json_node.update({
-            "speaker": self.speaker,
-            "text": self.text
-        })
+        json_node.update({"speaker": self.speaker, "text": self.text})
 
         return json_node
 
@@ -210,6 +214,7 @@ class Choice(Node):
     kwargs:
         keyword arguments passed to the base class `Node`.
     """
+
     node_type = "choice"
 
     def __init__(self, choices: list = list(), **kwargs):
@@ -223,11 +228,14 @@ class Choice(Node):
             choice["next_id"] = choice.get("next_id")
 
     def to_dot(self):
-        choice_text = "".join([
-            f"<tr><td align=\"left\">{n}. {choice.get('text')}</td></tr>" for n, choice in enumerate(self.choices)
-        ])
+        choice_text = "".join(
+            [
+                f"<tr><td align=\"left\">{n}. {choice.get('text')}</td></tr>"
+                for n, choice in enumerate(self.choices)
+            ]
+        )
 
-        return f"{self.node_id} [label=<<table border=\"0\" cellborder=\"0\">{choice_text}</table>>, shape=diamond];"
+        return f'{self.node_id} [label=<<table border="0">{choice_text}</table>>, shape=diamond];'
 
     def to_json(self):
         json_node = super().to_json()
@@ -275,6 +283,7 @@ class Setter(Node):
     kwargs:
         keyword arguments passed to the base class `Node`.
     """
+
     node_type = "setter"
 
     def __init__(self, key: str = "", value: str | int | bool = "", **kwargs):
@@ -284,13 +293,10 @@ class Setter(Node):
         self.value = value
 
     def to_dot(self):
-        return f"{self.node_id} [label=\"{self.key} = {self.value}\", shape=ellipse];"
+        return f'{self.node_id} [label="{self.key} = {self.value}", shape=ellipse];'
 
     def to_json(self):
         json_node = super().to_json()
-        json_node.update({
-            "key": self.key,
-            "value": self.value
-        })
+        json_node.update({"key": self.key, "value": self.value})
 
         return json_node
