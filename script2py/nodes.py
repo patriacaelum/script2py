@@ -158,7 +158,9 @@ class Line(Node):
             ]
         )
 
-        return f'{self.node_id} [label=<<table border="0"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>, shape=box];'
+        table = f'<<table border="0"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>'
+
+        return f'{self.node_id} [label={table}, shape=box];'
 
     def to_json(self):
         json_node = super().to_json()
@@ -210,10 +212,14 @@ class Choice(Node):
 
     node_type = "choice"
 
-    def __init__(self, choices: list = list(), **kwargs):
+    def __init__(self, choices: list = None, **kwargs):
         super().__init__(**kwargs)
 
-        self.choices = choices
+        if choices is None:
+            self.choices = list()
+
+        else:
+            self.choices = choices
 
         for choice in self.choices:
             choice["speaker"] = choice.get("speaker", "")
@@ -223,7 +229,7 @@ class Choice(Node):
     def to_dot(self):
         choice_text = "".join(
             [
-                f"<tr><td align=\"left\">{n}. {choice.get('text')}</td></tr>"
+                f"<tr><td align=\"left\">{n}. {choice['text']}</td></tr>"
                 for n, choice in enumerate(self.choices)
             ]
         )

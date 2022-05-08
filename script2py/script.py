@@ -16,7 +16,6 @@ import json
 import os
 import subprocess
 
-from collections import defaultdict
 from itertools import groupby
 
 from script2py.nodes import Line, Choice, Setter
@@ -135,7 +134,7 @@ class Script:
         if self.last_modified != last_modified:
             self._clear()
 
-            with open(self.filepath, "r") as file:
+            with open(self.filepath, "r", encoding="utf-8") as file:
                 script = file.readlines()
 
             self.nodes = self._parse(script)
@@ -299,28 +298,27 @@ class Script:
                 # Ignore blanklines and comments
                 continue
 
-            elif line[0].isspace():
+            if line[0].isspace():
                 # Blocks with multiple lines should be indented
                 block.append(line)
 
                 continue
 
+            block.append(line)
+            block = list(reversed(block))
+
+            # Join consecutive choice blocks
+            if (
+                block[0][:3] == "***"
+                and len(blocks) > 0
+                and blocks[-1][0][:3] == "***"
+            ):
+                blocks[-1] = block + blocks[-1]
+
             else:
-                block.append(line)
-                block = list(reversed(block))
+                blocks.append(block)
 
-                # Join consecutive choice blocks
-                if (
-                    block[0][:3] == "***"
-                    and len(blocks) > 0
-                    and blocks[-1][0][:3] == "***"
-                ):
-                    blocks[-1] = block + blocks[-1]
-
-                else:
-                    blocks.append(block)
-
-                block = list()
+            block = list()
 
         return list(reversed(blocks))
 
@@ -358,7 +356,7 @@ class Script:
 
     def _write_dot(self):
         """Writes the script as a dot file."""
-        with open(self.dotfile, "w") as file:
+        with open(self.dotfile, "w", encoding="utf-8") as file:
             try:
                 file.write(self.to_dot())
                 print(f"Successfully updated dot output: {self.dotfile}")
@@ -387,7 +385,7 @@ class Script:
 
     def _write_json(self):
         """Writes the script as a JSON file."""
-        with open(self.jsonfile, "w") as file:
+        with open(self.jsonfile, "w", encoding="utf-8") as file:
             try:
                 json.dump(self.to_json(), file)
                 print(f"Successfully updated JSON output: {self.jsonfile}")

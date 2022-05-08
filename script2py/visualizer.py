@@ -48,14 +48,14 @@ class Visualizer:
         modified.
         """
         while True:
-            updated = self._update()
+            updated = self.update()
 
             if updated:
                 print("\nscript2json visualizer running...press CTRL-C to stop\n")
 
             time.sleep(self.interval)
 
-    def _update(self):
+    def update(self):
         """Updates the scripts from the root directory and its subdirectories.
 
         This method is also called to update the visualizers in the
@@ -141,6 +141,6 @@ class Visualizer:
 
         visualizer = self.subvisualizers[dirpath]
 
-        updated = visualizer._update()
+        updated = visualizer.update()
 
         return updated
