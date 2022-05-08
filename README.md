@@ -5,8 +5,7 @@ Script2Py is a simple terminal-based program that converts a script format
 This is specially tailored as a tool for a personal project.
 
 The syntax and structure are inspired by
-[The Poor Man's Dialogue Tree](evantodd), [Ink](inkle), and
-[YarnSpinner](yarnspinner).
+[The Poor Man's Dialogue Tree][1], [Ink][2], and [YarnSpinner][3].
 
 ### Usage
 
@@ -71,7 +70,7 @@ branch may end with any statement, but only the `Choice` statement will lead
 to another branch.
 
 Let's take one of the simple examples, which you can find in
-[samples/short_story/sample1.s2py](sample).
+[samples/short_story/sample1.s2py](/sample/short_story/sample1.s2py).
 
 ```text
 StartBranch
@@ -131,15 +130,13 @@ seconds.
 
 We can visually see the structure of the script through the GraphViz output.
 
-![sample graph output](samplegraph)
+![sample graph output](/sample/short_story/sample1.png)
 
 This command will also create the JSON outputs, where each statement is treated
 as a node in a graph and will contain the information about the statement as
 well as the next node. There is also a master JSON outside of the specified
 directory, which aggregates all the scripts in the directory.
    
-[evantodd]: https://github.com/etodd/Lemma/tree/master/Dialogger
-[inkle]: https://github.com/inkle/ink
-[samplegraph]: https://github.com/patriacaelum/script2json/blob/main/sample/short_story/sample1.png
-[samplescript]: https://github.com/patriacaelum/script2json/blob/main/sample/short_story/sample1.s2py
-[yarnspinner]: https://github.com/YarnSpinnerTool/YarnSpinner
+[1]: https://github.com/etodd/Lemma/tree/master/Dialogger
+[2]: https://github.com/inkle/ink
+[3]: https://github.com/YarnSpinnerTool/YarnSpinner
