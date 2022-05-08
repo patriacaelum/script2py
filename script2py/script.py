@@ -12,6 +12,7 @@ Each script represents a full conversation consisting of multiple nodes (see
 """
 
 
+import json
 import os
 import subprocess
 
@@ -64,7 +65,7 @@ class Script:
                 "\n".join(
                     [
                         f"subgraph cluster_{s}" + " {",
-                        f"label = \"{section}\";",
+                        f"label=<<b>{section}</b>> fontsize=\"24pt\";",
                         "\n".join([node.to_dot() for node in group]),
                         "}",
                     ]
@@ -80,10 +81,13 @@ class Script:
             if isinstance(node, Choice):
                 for n, choice in enumerate(node.choices):
                     next_id = choice.get("next_id", node.next_id)
-                    dot_edges.append(f"{node.node_id} -> {next_id} [label = {n}];")
+
+                    if next_id is not None:
+                        dot_edges.append(f"{node.node_id} -> {next_id} [label = {n}];")
 
             else:
-                dot_edges.append(f"{node.node_id} -> {node.next_id};")
+                if node.next_id is not None:
+                    dot_edges.append(f"{node.node_id} -> {node.next_id};")
 
         # Define directional graph
         dot_output = "\n".join([
@@ -183,7 +187,7 @@ class Script:
                 elif prefix == "-->":
                     # Optional goto block
                     goto_section = line[3:].strip()
-                    choices[-1]["next_id"] = self.sections[goto_section]
+                    choices[-1]["next_id"] = self.sections.get(goto_section)
 
                 else:
                     # Multi-line choice
@@ -200,7 +204,7 @@ class Script:
 
         elif prefix == "<<{":
             # Setter block
-            key, value = block[0][3:-3].split("=")
+            key, value = block[0].strip()[3:-3].split("=")
 
             node = Setter(
                 key=key.strip(), 
@@ -248,6 +252,7 @@ class Script:
         sections = self._parse_sections(script)
 
         for title, section in reversed(sections.items()):
+            title = title.strip()
             blocks = self._parse_blocks(section)
 
             for block in reversed(blocks):
@@ -260,6 +265,7 @@ class Script:
                     elif len(nodes) > 0:
                         node.next_id = nodes[-1].node_id
 
+                    node.section = title
                     nodes.append(node)
 
                 # The next section id should be `None` unless the block is a
@@ -267,7 +273,7 @@ class Script:
                 next_section_id = self.sections.get(next_section)
 
             # The node id of each section is the first node in that section
-            self.sections[title.strip()] = nodes[-1].node_id
+            self.sections[title] = nodes[-1].node_id
 
         return list(reversed(nodes))
 
@@ -309,7 +315,7 @@ class Script:
                 block = list(reversed(block))
 
                 # Join consecutive choice blocks
-                if block[0][:3] == "***" and blocks[-1][0][:3] == "***":
+                if block[0][:3] == "***" and len(blocks) > 0 and blocks[-1][0][:3] == "***":
                     blocks[-1] = block + blocks[-1]
                 
                 else:
@@ -384,7 +390,7 @@ class Script:
         """Writes the script as a JSON file."""
         with open(self.jsonfile, "w") as file:
             try:
-                json.dump(self.to_json())
+                json.dump(self.to_json(), file)
                 print(f"Successfully updated JSON output: {self.jsonfile}")
             
             except Exception as error:

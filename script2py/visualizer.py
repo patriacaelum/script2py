@@ -13,7 +13,7 @@ dot graph whenever the script file changes.
 import os
 import time
 
-from script import Script
+from script2py.script import Script
 
 
 class Visualizer:
@@ -118,7 +118,6 @@ class Visualizer:
         if filepath not in self.scripts.keys():
             self.scripts[filepath] = Script(
                 filepath=filepath,
-                last_modified=last_modified,
                 wrap=self.wrap,
             )
 
@@ -147,17 +146,14 @@ class Visualizer:
         """
         dirpath = entry.path
 
-        if dirpath not in self.subvisulizers.keys():
+        if dirpath not in self.subvisualizers.keys():
             self.subvisualizers[dirpath] = Visualizer(
-                pathdir=dirpath,
+                dirpath=dirpath,
                 wrap=self.wrap,
             )
 
         visualizer = self.subvisualizers[dirpath]
 
         updated = visualizer._update()
-
-        if updated:
-            visualizer._write_json()
 
         return updated

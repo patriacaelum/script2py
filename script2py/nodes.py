@@ -152,7 +152,9 @@ class Line(Node):
         self.text = self._clean(text)
 
     def to_dot(self):
-        return f"{self.node_id} [label=\"{self.speaker}\\n{self.text}\", shape=box];"
+        text = "".join([f"<tr><td align=\"left\">{line}</td></tr>" for line in self.text.splitlines()])
+        return f"{self.node_id} [label=<<table border=\"0\"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>, shape=box];"
+        # return f"{self.node_id} [label=\"{self.speaker}\\n{self.text}\", shape=box];"
 
     def to_json(self):
         json_node = super().to_json()
@@ -221,11 +223,11 @@ class Choice(Node):
             choice["next_id"] = choice.get("next_id")
 
     def to_dot(self):
-        choice_text = "\\n".join([
-            f"{n}. {choice}" for n, choice in enumerate(self.choices)
+        choice_text = "".join([
+            f"<tr><td align=\"left\">{n}. {choice.get('text')}</td></tr>" for n, choice in enumerate(self.choices)
         ])
 
-        return f"{self.node_id} [label=\"Choice\\n{choice_text}\", shape=box];"
+        return f"{self.node_id} [label=<<table border=\"0\" cellborder=\"0\">{choice_text}</table>>, shape=diamond];"
 
     def to_json(self):
         json_node = super().to_json()
@@ -282,7 +284,7 @@ class Setter(Node):
         self.value = value
 
     def to_dot(self):
-        return f"{self.node_id} [label=\"Set\\n{self.key} = {self.value}\", shape=box];"
+        return f"{self.node_id} [label=\"{self.key} = {self.value}\", shape=ellipse];"
 
     def to_json(self):
         json_node = super().to_json()
