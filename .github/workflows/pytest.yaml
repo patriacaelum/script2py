@@ -29,6 +29,7 @@ jobs:
       - name: generate coverage report
         run: |
           coverage run -m pytest ./test/
+          coverage xml
 
       - name: retrieve coverage badge
         uses: codecov/codecov-action@v2
