@@ -1,4 +1,4 @@
-# script2py
+# [script2py][readthedocs]
 
 [![Linting][pylintbadge]][pylintworkflow]
 [![Documentation][documentationbadge]][documentationworkflow]
@@ -148,6 +148,7 @@ directory, which aggregates all the scripts in the directory.
 [inkle]: https://github.com/inkle/ink
 [pylintbadge]: https://github.com/patriacaelum/script2py/actions/workflows/pylint.yaml/badge.svg
 [pylintworkflow]: https://github.com/patriacaelum/script2py/actions/workflows/pylint.yaml
+[readthedocs]: https://patriacaelum.github.io/script2py/
 [testsbadge]: https://github.com/patriacaelum/script2py/actions/workflows/pytest.yaml/badge.svg
 [testsworkflow]: https://github.com/patriacaelum/script2py/actions/workflows/pytest.yaml
 [yarnspinnertool]: https://github.com/YarnSpinnerTool/YarnSpinner
