@@ -1,14 +1,14 @@
 digraph G {
-subgraph cluster_0{
-label = "Start";
-140458263138016 [label="Man\nYou never know ahead of time what something's really going to be like.", shape=box];
-140458263138256 [label="Man\nSometimes it seems like life is as delicate as a dandelion.", shape=box];
-140458263138064 [label="Man\nOne little puff from any direction, and it is blown to bits.", shape=box];
-140458263138208 [label="Man\n...", shape=box];
-140458263137824 [label="Man\nShe loved you, you know. You were the best friend she's ever had.", shape=box];
+subgraph cluster_0 {
+label=<<b>Start</b>> fontsize="24pt";
+140156120328096 [label=<<table border="0"><tr><td><b>Man</b></td></tr><tr><td align="left">You never know ahead of time what something's really going to be like.</td></tr></table>>, shape=box];
+140156120328240 [label=<<table border="0"><tr><td><b>Man</b></td></tr><tr><td align="left">Sometimes it seems like life is as delicate as a dandelion.</td></tr></table>>, shape=box];
+140156120327856 [label=<<table border="0"><tr><td><b>Man</b></td></tr><tr><td align="left">One little puff from any direction, and it is blown to bits.</td></tr></table>>, shape=box];
+140156120328000 [label=<<table border="0"><tr><td><b>Man</b></td></tr><tr><td align="left">...</td></tr></table>>, shape=box];
+140156120328048 [label=<<table border="0"><tr><td><b>Man</b></td></tr><tr><td align="left">She loved you, you know. You were the best friend she's ever had.</td></tr></table>>, shape=box];
 }
-140458263138016 -> 140458263138256;
-140458263138256 -> 140458263138064;
-140458263138064 -> 140458263138208;
-140458263138208 -> 140458263137824;
+140156120328096 -> 140156120328240;
+140156120328240 -> 140156120327856;
+140156120327856 -> 140156120328000;
+140156120328000 -> 140156120328048;
 }

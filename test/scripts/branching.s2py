@@ -1,0 +1,101 @@
+# This is an example of a branching script.
+
+
+Making A Decision
+-------------------
+
+# Ask questions to make a decision about which branch to take.
+
+Narrator: Let's cut to the chase: do you prefer film or theatre?
+
+*** Watcher: Film.
+    <<{ watcher.preference = film }>>
+
+*** Watcher: Theatre.
+    <<{ watcher.preference = theatre }>>
+
+Narrator: Alright, let's test that. Which of these have you heard of?
+
+*** Watcher: All About Eve.
+    --> Exerpt from All About Eve
+
+*** Watcher: Cat on a Hot Tin Roof.
+    --> Exerpt from Cat on a Hot Tin Roof
+
+*** Watcher: Neither.
+
+Narrator: Well, fine. You get nothing.
+
+===================
+
+
+Exerpt from All About Eve
+---------------------------
+
+# All About Eve is written by Joseph L. Mackiewicz.
+
+Addison: What do you take me for?
+
+Eve: I don't know that I take you for anything...
+
+Addison: It is possible -- even conceivable -- that you've confused me with
+    that gang of backward children you've been playing tricks on -- that you
+    have the same contempt for me that you have for them?
+
+Eve: I'm sure you mean something by that, Addison, but I don't know what...
+
+Addison: Look closely, Eve, it's time you did. I am Addison deWitt. I'm
+    nobody's fool. Least of all -- yours.
+
+Eve: I never intended you to be.
+
+Addison: Yes, you did. You still do.
+
+<<{ eve.portrait = standing }>>
+
+Eve: I still don't know what you're getting at. Right now I want to take my
+    nap. It's important that I --
+
+<<{ addison.portrait = aggressive }>>
+
+Addison: -- it's important right now that we talk. Killer to killer.
+
+===========================
+
+
+Exerpt from Cat on a Hot Tin Roof
+-----------------------------------
+
+# Cat on a Hot Tin Roof is written by Tennesse Williams.
+# This exerpt is from Act One.
+
+Brick: I didn't get him a present.
+
+Margaret: I got one for you.
+
+Brick: All right. You write the card, then.
+
+Margaret: And have him know you didn't remember his birthday?
+
+Brick: I didn't remember his birthday.
+
+Margaret: You don't have to prove you didn't!
+
+Brick: I don't to to fool him about it.
+
+Margaret: Just write 'Love, Brick!' for God's --
+
+Brick: No.
+
+Margaret: You've got to!
+
+Brick: I don't have to do anything I don't want to do. You keep forgetting the
+    conditions on which I agreed to stay on living with you.
+
+Margaret: I'm not living with you. We occupy the same cage.
+
+Brick: You've got to remember the conditions agreed on.
+
+Margaret: They're impossible conditions!
+
+===================================
