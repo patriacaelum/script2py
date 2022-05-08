@@ -1,11 +1,16 @@
 # script2py
 
+[![Linting][pylintbadge]][pylintworkflow]
+[![Documentation][documentationbadge]][documentationworkflow]
+[![Tests][testsbadge]][testsworkflow]
+
 Script2Py is a simple terminal-based program that converts a script format
 (like for a theatre play or film screenplay) into JSON, dot, and PNG formats.
 This is specially tailored as a tool for a personal project.
 
 The syntax and structure are inspired by
-[The Poor Man's Dialogue Tree][1], [Ink][2], and [YarnSpinner][3].
+[The Poor Man's Dialogue Tree][etodd], [Ink][inkle], and
+[YarnSpinner][yarnspinnertool].
 
 ### Usage
 
@@ -136,7 +141,13 @@ This command will also create the JSON outputs, where each statement is treated
 as a node in a graph and will contain the information about the statement as
 well as the next node. There is also a master JSON outside of the specified
 directory, which aggregates all the scripts in the directory.
-   
-[1]: https://github.com/etodd/Lemma/tree/master/Dialogger
-[2]: https://github.com/inkle/ink
-[3]: https://github.com/YarnSpinnerTool/YarnSpinner
+
+[documentationbadge]: https://github.com/patriacaelum/script2py/actions/workflows/sphinx.yaml/badge.svg
+[documentationworkflow]: https://github.com/patriacaelum/script2py/actions/workflows/sphinx.yaml
+[etodd]: https://github.com/etodd/Lemma/tree/master/Dialogger
+[inkle]: https://github.com/inkle/ink
+[pylintbadge]: https://github.com/patriacaelum/script2py/actions/workflows/pylint.yaml/badge.svg
+[pylintworkflow]: https://github.com/patriacaelum/script2py/actions/workflows/pylint.yaml
+[testsbadge]: https://github.com/patriacaelum/script2py/actions/workflows/pytest.yaml/badge.svg
+[testsworkflow]: https://github.com/patriacaelum/script2py/actions/workflows/pytest.yaml
+[yarnspinnertool]: https://github.com/YarnSpinnerTool/YarnSpinner

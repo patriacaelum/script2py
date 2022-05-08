@@ -107,13 +107,17 @@ class Script:
             a list of nodes in JSON format.
         """
         nodes = list()
+        first_node = None
 
         for node in self.nodes:
             nodes.append(node.to_json())
 
+        if len(nodes) > 0:
+            first_node = self.nodes[0].node_id
+
         json_output = {
             "speakers": list(self.speakers),
-            "first_node": self.nodes[0].node_id,
+            "first_node": first_node,
             "nodes": nodes,
         }
 
@@ -166,61 +170,157 @@ class Script:
         prefix = block[0][:3]
 
         if prefix == "***":
-            # Choice block
-            choices = list()
-
-            for line in block:
-                line = line.strip()
-                prefix = line[:3]
-
-                if prefix == "***":
-                    speaker, text = line[3:].split(":", maxsplit=1)
-                    choices.append(
-                        {
-                            "speaker": speaker.strip(),
-                            "text": text.strip(),
-                        }
-                    )
-                    self.speakers.add(choices[-1]["speaker"])
-
-                elif prefix == "-->":
-                    # Optional goto block
-                    goto_section = line[3:].strip()
-                    choices[-1]["next_id"] = self.sections.get(goto_section)
-
-                else:
-                    # Multi-line choice
-                    choices[-1]["text"] += " " + line
-
-            node = Choice(
-                choices=choices,
-                wrap=self.wrap,
-            )
+            node = self._classify_choice_block(block)
 
         elif prefix == "-->":
             # Goto block
             next_section = block[0][3:].strip()
 
         elif prefix == "<<{":
-            # Setter block
-            key, value = block[0].strip()[3:-3].split("=")
-
-            node = Setter(
-                key=key.strip(),
-                value=value.strip(),
-                wrap=self.wrap,
-            )
+            node = self._classify_setter_block(block)
 
         else:
-            # Line block
-            block = "\n".join(block)
-            speaker, text = block.split(":", maxsplit=1)
-
-            node = Line(speaker=speaker.strip(), text=text.strip(), wrap=self.wrap)
-
-            self.speakers.add(node.speaker)
+            node = self._classify_line_block(block)
 
         return node, next_section
+
+    def _classify_choice_block(self, block: list):
+        """Creates a ``Choice`` node from a block of text.
+
+        Parameters
+        ------------
+        block: list(str)
+            the block of text making up a choice block.
+
+        Returns
+        ---------
+        Choice
+            a ``Choice`` node.
+        """
+        choices = list()
+
+        for line in block:
+            line = line.strip()
+            prefix = line[:3]
+
+            if prefix == "***":
+                try:
+                    speaker, text = line[3:].split(":", maxsplit=1)
+
+                except ValueError as error:
+                    block = " ".join(block).replace("\n", " ")
+
+                    raise SyntaxError(
+                        f"Choice block is missing colon (:) in: '{block}'"
+                    ) from error
+
+                choices.append(
+                    {
+                        "speaker": speaker.strip(),
+                        "text": text.strip(),
+                    }
+                )
+                self.speakers.add(choices[-1]["speaker"])
+
+            elif prefix == "-->":
+                # Optional goto block
+                goto_section = line[3:].strip()
+
+                try:
+                    choices[-1]["next_id"] = self.sections[goto_section]
+
+                except KeyError as error:
+                    block = " ".join(block).replace("\n", " ")
+
+                    raise SyntaxError(
+                        f"Choice block goto {goto_section} does not exist in: '{block}'"
+                    ) from error
+
+            else:
+                # Multi-line choice
+                choices[-1]["text"] += " " + line
+
+        node = Choice(
+            choices=choices,
+            wrap=self.wrap,
+        )
+
+        return node
+
+    def _classify_line_block(self, block: list):
+        """Creates a ``Line`` node from a block of text.
+
+        Parameters
+        ------------
+        block: list(str)
+            the block of text making up a line block.
+
+        Returns
+        ---------
+        Line
+            a ``Line`` node.
+        """
+        block = "\n".join(block)
+
+        try:
+            speaker, text = block.split(":", maxsplit=1)
+            self.speakers.add(speaker)
+
+        except ValueError as error:
+            block = block.replace("\n", " ")
+
+            raise SyntaxError(
+                f"Line block is missing colon (:) in: '{block}'"
+            ) from error
+
+        node = Line(speaker=speaker.strip(), text=text.strip(), wrap=self.wrap)
+
+        return node
+
+    def _classify_setter_block(self, block: list):
+        """Creates a ``Setter`` node from a block of text.
+
+        Parameters
+        ------------
+        block: list(str)
+            the block of text making up a setter block. The block should only be
+            one line long.
+
+        Returns
+        ---------
+        Setter
+            a ``Setter`` node.
+        """
+        line = block[0].strip()
+
+        if line[-3:] != "}>>":
+            raise SyntaxError(f"Setter block missing closing brackets in: '{line}'")
+
+        try:
+            key, value = line[3:-3].split("=")
+
+        except ValueError as error:
+            raise SyntaxError(
+                f"Setter block missing assignment (=) in: '{line}'"
+            ) from error
+
+        try:
+            value = int(value)
+
+        except ValueError:
+            if value.lower() == "true":
+                value = True
+
+            elif value.lower() == "false":
+                value = False
+
+        node = Setter(
+            key=key.strip(),
+            value=value.strip(),
+            wrap=self.wrap,
+        )
+
+        return node
 
     def _clear(self):
         """Clears the parsed data."""
@@ -266,8 +366,9 @@ class Script:
                 # goto block
                 next_section_id = self.sections.get(next_section)
 
-            # The node id of each section is the first node in that section
-            self.sections[title] = nodes[-1].node_id
+            if len(nodes) > 0:
+                # The node id of each section is the first node in that section
+                self.sections[title] = nodes[-1].node_id
 
         return list(reversed(nodes))
 
@@ -308,11 +409,7 @@ class Script:
             block = list(reversed(block))
 
             # Join consecutive choice blocks
-            if (
-                block[0][:3] == "***"
-                and len(blocks) > 0
-                and blocks[-1][0][:3] == "***"
-            ):
+            if block[0][:3] == "***" and len(blocks) > 0 and blocks[-1][0][:3] == "***":
                 blocks[-1] = block + blocks[-1]
 
             else:
