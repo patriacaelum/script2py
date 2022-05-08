@@ -30,10 +30,3 @@ jobs:
         run: |
           coverage run -m pytest ./test/
           coverage xml
-
-      - name: retrieve coverage badge
-        uses: codecov/codecov-action@v2
-        with:
-          files: ./coverage.xml
-          fail_ci_if_error: true
-          move_coverage_to_trash: true
