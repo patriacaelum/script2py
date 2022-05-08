@@ -1,0 +1,37 @@
+test package
+============
+
+Submodules
+----------
+
+test.fixtures module
+--------------------
+
+.. automodule:: test.fixtures
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+test.test\_nodes module
+-----------------------
+
+.. automodule:: test.test_nodes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+test.test\_script module
+------------------------
+
+.. automodule:: test.test_script
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: test
+   :members:
+   :undoc-members:
+   :show-inheritance:
