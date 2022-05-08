@@ -9,7 +9,7 @@ graph using GraphViz.
 
 from argparse import ArgumentParser
 
-from visualizer import Visualizer
+from script2py.visualizer import Visualizer
 
 
 def main():
@@ -19,12 +19,12 @@ def main():
     )
 
     parser.add_argument(
-        "--pathdir",
-        "-p",
+        "--dirpath",
+        "-d",
         type=str,
         required=True,
         help="path to the directory of script files",
-        dest="pathdir"
+        dest="dirpath"
     )
 
     parser.add_argument(
@@ -47,13 +47,13 @@ def main():
 
     parser.set_defaults(
         interval=5,
-        textlength_max=80
+        wrap=80
     )
 
     args = parser.parse_args()
 
     visualizer = Visualizer(
-        pathdir=args.pathdir,
+        dirpath=args.dirpath,
         interval=args.interval,
         wrap=args.wrap,
     )
