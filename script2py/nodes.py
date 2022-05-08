@@ -158,9 +158,11 @@ class Line(Node):
             ]
         )
 
-        table = f'<<table border="0"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>'
+        table = (
+            f'<<table border="0"><tr><td><b>{self.speaker}</b></td></tr>{text}</table>>'
+        )
 
-        return f'{self.node_id} [label={table}, shape=box];'
+        return f"{self.node_id} [label={table}, shape=box];"
 
     def to_json(self):
         json_node = super().to_json()

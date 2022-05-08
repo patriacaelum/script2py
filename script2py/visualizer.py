@@ -47,8 +47,22 @@ class Visualizer:
         script file has been updated by comparing the time the file was last
         modified.
         """
+        last_error = None
+
         while True:
-            updated = self.update()
+            updated = False
+
+            try:
+                updated = self.update()
+
+            except SyntaxError as error:
+                error = str(error)
+
+                if error != last_error:
+                    print(error)
+
+                    last_error = error
+                    updated = True
 
             if updated:
                 print("\nscript2json visualizer running...press CTRL-C to stop\n")
